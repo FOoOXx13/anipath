@@ -49,6 +49,10 @@ body {
 
 
 /* text styles */
+.text-basecolor {
+  color: var(--color-foreground);
+}
+
 .text-muted {
   color: var(--text-muted);
 }

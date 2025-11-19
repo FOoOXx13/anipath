@@ -15,9 +15,9 @@ const link_items = [
 const Navbar = () => {
   return (
     <div className='bg-bg-dark h-full rounded-2xl flex flex-col gap-2 px-2 py-5'>
-        
+
         <div className='px-3'>
-            <Image src='/icons/list_dark.png' alt='list-icon' width={20} height={14}/>
+            <Image src='/icons/list_dark.png' alt='list-icon' width={24} height={24}  />
         </div>
 
         {link_items.map((item) => (

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Roboto_Slab, Montserrat } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import Header from "@/components/Header";
 
 const robotoSlab = Roboto_Slab({
   variable: "--font-roboto-slab",
@@ -36,7 +37,8 @@ export default function RootLayout({
         </nav>
 
         {/* Main content */}
-        <main className="w-full h-full overflow-y-auto">
+        <main className="w-full h-full overflow-y-auto px-4 py-3">
+          <Header/>
         {children}
         </main>
 
