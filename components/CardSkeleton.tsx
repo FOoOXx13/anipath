@@ -2,15 +2,15 @@
   return (
        <div className="h-[400px] bg-bg-dark rounded-xl flex flex-col items-center >">
 
-      <div  className="w-[200px] h-[300px] bg-(--color-muted) rounded-xl " />
+      <div  className="w-[200px] h-[300px] bg-(--bg-light) rounded-xl " />
 
-      <div className="w-full flex flex-col px-4">
-        <div className="w-30 bg-(--color-muted) h-4"></div>
+      <div className="w-full flex flex-col px-4 gap-2 mt-2">
+        <div className="w-30 bg-(--bg-light) h-4 rounded-2xl"></div>
 
-        <div className="w-full flex flex-col  ">
+        <div className="w-full flex flex-col gap-2">
 
-        <div className="w-20 bg-(--color-muted) h-2"></div>
-        <div className="w-20 bg-(--color-muted) h-2"></div>
+        <div className="w-20 bg-(--bg-light) h-2 rounded-2xl"></div>
+        <div className="w-20 bg-(--bg-light) h-2 rounded-2xl"></div>
 
         </div>
       </div>

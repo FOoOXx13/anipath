@@ -15,7 +15,10 @@ export default function GsapCarousel({ items, step = 1, gap = 16, visibleItems =
   const trackRef = useRef<HTMLDivElement | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const [index, setIndex] = useState(0);
-  const [cardWidth, setCardWidth] = useState(0);
+  const [cardWidth, setCardWidth] = useState<number>(0);
+  const defaultCardWidth = 200; // same as skeleton/Card width
+  const computedCardWidth = cardWidth || defaultCardWidth;  
+
 
   const visibleCount = visibleItems ; // number of cards visible at once
 
@@ -62,9 +65,9 @@ export default function GsapCarousel({ items, step = 1, gap = 16, visibleItems =
           style={{ gap: `${gap}px`,}}
         >
           {items.map((item, i) => (
-            <div key={i} className="shrink-0" style={{ width: cardWidth }}>
-              {item}
-            </div>
+           <div key={i} className="shrink-0" style={{ width: computedCardWidth }}>
+            {item}
+          </div>
           ))}
         </div>
       </div>
