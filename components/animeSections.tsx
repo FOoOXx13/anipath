@@ -5,15 +5,20 @@ import Card from "@/components/Card";
 import CardSkeleton from "@/components/CardSkeleton";
 import Carousel from "@/components/Carousel";
 import {Anime, fetchTrendingAnime, fetchUpcomingAnime, fetchAllTimePopularAnime } from "../app/lib/anilist";
+import { useCardCount } from "./useCardCount";
 
 
 export default function TrendingSection() {
+  const cardCount = useCardCount()
+
   const [animeList, setAnimeList] = useState<Anime[] | null>(null);
 
   useEffect(() => {
     fetchTrendingAnime(1).then((data) => setAnimeList(data));
   }, []);
 
+  
+
   const items = animeList
     ? animeList.map((anime) => {
         const title = anime.title.english || anime.title.romaji;
@@ -30,18 +35,21 @@ export default function TrendingSection() {
           />
         );
       })
-    : Array.from({ length: 8 }).map((_, i) => <CardSkeleton key={i} />);
+    : Array.from({ length: cardCount }).map((_, i) => <CardSkeleton key={i} />);
 
-  return <Carousel items={items} step={1} gap={16} visibleItems={8} />;
+  return <Carousel items={items} step={1} gap={16} visibleItems={cardCount} />;
 }
 
 export  function UpcomingNextSeasonSection() {
+  const cardCount = useCardCount()
+
   const [animeList, setAnimeList] = useState<Anime[] | null>(null);
 
   useEffect(() => {
     fetchUpcomingAnime(1).then((data) => setAnimeList(data));
   }, []);
 
+
   const items = animeList
     ? animeList.map((anime) => {
         const title = anime.title.english || anime.title.romaji;
@@ -58,12 +66,14 @@ export  function UpcomingNextSeasonSection() {
           />
         );
       })
-    : Array.from({ length: 8 }).map((_, i) => <CardSkeleton key={i} />);
+    : Array.from({ length: cardCount }).map((_, i) => <CardSkeleton key={i} />);
 
-  return <Carousel items={items} step={1} gap={16} visibleItems={8} />;
+  return <Carousel items={items} step={1} gap={16} visibleItems={cardCount} />;
 }
 
 export  function AllTimePopularSection() {
+  const cardCount = useCardCount()
+
   const [animeList, setAnimeList] = useState<Anime[] | null>(null);
 
   useEffect(() => {
@@ -75,7 +85,6 @@ export  function AllTimePopularSection() {
         const title = anime.title.english || anime.title.romaji;
         const shortTitle = title.length > 20 ? title.slice(0, 20) + "..." : title;
         
-
         return (
           <Card
             key={anime.id}
@@ -86,9 +95,9 @@ export  function AllTimePopularSection() {
           />
         );
       })
-    : Array.from({ length: 8 }).map((_, i) => <CardSkeleton key={i} />);
+    : Array.from({ length: cardCount }).map((_, i) => <CardSkeleton key={i} />);
 
-  return <Carousel items={items} step={1} gap={16} visibleItems={8} />;
+  return <Carousel items={items} step={1} gap={16} visibleItems={cardCount} />;
 }
 
 

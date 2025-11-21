@@ -24,7 +24,6 @@ export default function GsapCarousel({ items, step = 1, gap = 16, visibleItems =
 
   useEffect(() => {
     if (!wrapperRef.current) return;
-    
     const handleResize = () => {
       const containerWidth = wrapperRef.current!.offsetWidth;
       // subtract the total gaps between visible cards so cards fit exactly
@@ -36,7 +35,7 @@ export default function GsapCarousel({ items, step = 1, gap = 16, visibleItems =
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [visibleCount, gap]);
 
   const maxIndex = Math.max(items.length - visibleCount, 0);
 
@@ -47,11 +46,17 @@ export default function GsapCarousel({ items, step = 1, gap = 16, visibleItems =
     if (!trackRef.current) return;
 
     gsap.to(trackRef.current, {
-      x: -(index * (cardWidth + gap)),
+      x: -(index * (computedCardWidth + gap)),
       duration: 0.5,
       ease: "power2.out"
     });
-  }, [index, cardWidth, gap]);
+  }, [index, computedCardWidth, gap]);
+
+  // clamp index if visible count or items length changes so we don't scroll past end
+  useEffect(() => {
+    const newMax = Math.max(items.length - visibleCount, 0);
+    setIndex((prev) => Math.min(prev, newMax));
+  }, [visibleCount, items.length]);
 
 
   return (

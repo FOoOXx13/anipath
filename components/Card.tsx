@@ -14,8 +14,8 @@ const Card = ({imageSrc = '',  animeTitle = '', animeYear, animeEpisodes }: Card
 
 
   return (
-     <div className="h-[400px] bg-bg-dark rounded-xl flex flex-col items-center >">
-      <Image src={imageSrc} alt="" className="w-full h-[300px] bg-(--bg-light) rounded-xl " width={200} height={300} />
+     <div className="h-[400px] w-full bg-bg-dark rounded-xl flex flex-col items-center >">
+      <img src={imageSrc} alt="" className="w-full h-[300px] bg-(--bg-light) rounded-xl " />
       <div className="w-full flex flex-col px-4">
         <h3 className="text-lg font-semibold ">{ animeTitle}</h3>
         <div className="w-full flex flex-col text-(--color-muted) ">
