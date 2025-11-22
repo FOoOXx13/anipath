@@ -34,9 +34,9 @@ export default function TrendingSection() {
           />
         );
       })
-    : Array.from({ length: cardCount }).map((_, i) => <CardSkeleton key={i} />);
+    : Array.from({ length: 8 }).map((_, i) => <CardSkeleton key={i} />);
 
-  return <Carousel items={items} step={1} gap={16} visibleItems={cardCount} />;
+  return <Carousel items={items} step={1} gap={16} visibleItems={cardCount} skeleton={!animeList} />;
 }
 
 export  function UpcomingNextSeasonSection() {
@@ -65,9 +65,9 @@ export  function UpcomingNextSeasonSection() {
           />
         );
       })
-    : Array.from({ length: cardCount }).map((_, i) => <CardSkeleton key={i} />);
+    : Array.from({ length: 8 }).map((_, i) => <CardSkeleton key={i} />);
 
-  return <Carousel items={items} step={1} gap={16} visibleItems={cardCount} />;
+  return <Carousel items={items} step={1} gap={16} visibleItems={cardCount} skeleton={!animeList} />;
 }
 
 export  function AllTimePopularSection() {
@@ -94,9 +94,9 @@ export  function AllTimePopularSection() {
           />
         );
       })
-    : Array.from({ length: cardCount }).map((_, i) => <CardSkeleton key={i} />);
+    : Array.from({ length: 8 }).map((_, i) => <CardSkeleton key={i} />);
 
-  return <Carousel items={items} step={1} gap={16} visibleItems={cardCount} />;
+  return <Carousel items={items} step={1} gap={16} visibleItems={cardCount} skeleton={!animeList} />;
 }
 
 

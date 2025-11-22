@@ -77,6 +77,45 @@ body {
   color: var(--color-foreground);
   font-family: var(--font-body);
 }
+/* Skeleton responsive visibility for carousel skeleton mode.
+   The track will have class `skeleton-track` in skeleton mode and each direct child
+   is a card wrapper. We hide/show the first N children per breakpoint so the
+   server DOM (always rendering the max number of skeleton items) doesn't change
+   but the browser only displays the right number of skeletons for the viewport.
+ */
+.skeleton-track > div { display: none; }
+
+/* smallest: show 2 */
+@media (min-width: 0px) {
+  .skeleton-track > div:nth-child(-n+2) { display: block; }
+}
+
+@media (min-width: 1000px) {
+  .skeleton-track > div:nth-child(-n+3) { display: block; }
+}
+
+@media (min-width: 1220px) {
+  .skeleton-track > div:nth-child(-n+4) { display: block; }
+}
+
+@media (min-width: 1450px) {
+  .skeleton-track > div:nth-child(-n+5) { display: block; }
+}
+
+@media (min-width: 1675px) {
+  .skeleton-track > div:nth-child(-n+6) { display: block; }
+}
+
+@media (min-width: 1875px) {
+  .skeleton-track > div:nth-child(-n+7) { display: block; }
+}
+
+@media (min-width: 2100px) {
+  .skeleton-track > div:nth-child(-n+8) { display: block; }
+}
+
+
+
 
 
 
