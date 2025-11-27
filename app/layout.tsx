@@ -29,10 +29,11 @@ export default function RootLayout({
       <body
         className={`${robotoSlab.variable} ${montserrat.variable} antialiased`}
       >
+
         <div className="flex h-screen">
           
         {/* sideBar */}
-        <nav className="w-60 h-full px-2 py-3">
+        <nav className=" ">
           <Navbar/>
         </nav>
 

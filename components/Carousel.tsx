@@ -12,6 +12,7 @@ interface CarouselProps {
   cardFixedWidth?: number;
   skeleton?: boolean;
 }
+
 export default function GsapCarousel({ items, step = 1, gap = 16, visibleItems = 8, cardFixedWidth = 200, skeleton = false }: CarouselProps) {
   const trackRef = useRef<HTMLDivElement | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
