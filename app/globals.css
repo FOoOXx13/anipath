@@ -90,28 +90,34 @@ body {
   .skeleton-track > div:nth-child(-n+2) { display: block; }
 }
 
-@media (min-width: 1000px) {
+@media (min-width: 745px) {
   .skeleton-track > div:nth-child(-n+3) { display: block; }
 }
 
-@media (min-width: 1220px) {
+@media (min-width: 1000px) {
   .skeleton-track > div:nth-child(-n+4) { display: block; }
 }
 
-@media (min-width: 1450px) {
+@media (min-width: 1230px) {
   .skeleton-track > div:nth-child(-n+5) { display: block; }
 }
 
-@media (min-width: 1675px) {
+@media (min-width: 1624px) {
   .skeleton-track > div:nth-child(-n+6) { display: block; }
 }
 
-@media (min-width: 1875px) {
+@media (min-width: 1860px) {
   .skeleton-track > div:nth-child(-n+7) { display: block; }
 }
 
-@media (min-width: 2100px) {
+@media (min-width: 2060px) {
   .skeleton-track > div:nth-child(-n+8) { display: block; }
+}
+@media (min-width: 2280px) {
+  .skeleton-track > div:nth-child(-n+9) { display: block; }
+}
+@media (min-width: 2480px) {
+  .skeleton-track > div:nth-child(-n+10) { display: block; }
 }
 
 

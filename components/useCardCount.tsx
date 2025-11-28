@@ -7,12 +7,16 @@ export function useCardCount() {
     if (typeof window === "undefined") return 8;
     const w = window.innerWidth;
 
-    if (w >= 2100) return 8;
-    if (w >= 1875) return 7;
-    if (w >= 1675) return 6;
-    if (w >= 1450) return 5;
-    if (w >= 1220) return 4;
-    if (w >= 1000) return 3;
+    if (w >= 2480) return 10;
+    if (w >= 2280) return 9;
+    if (w >= 2060) return 8;
+    if (w >= 1860) return 7;
+    if (w >= 1624) return 6;
+    if (w >= 1230) return 5;
+    if (w >= 1000) return 4;
+    if (w >= 745) return 3;
+    if (w <= 745 && w >= 600) return 4;
+    if (w <= 600 && w >= 400) return 3;
     return 2;
   };
 
@@ -32,4 +36,4 @@ export function useCardCount() {
   }, []);
 
   return cardCount;
-}
+} 

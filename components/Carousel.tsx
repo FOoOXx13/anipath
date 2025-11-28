@@ -13,10 +13,11 @@ interface CarouselProps {
   skeleton?: boolean;
 }
 
-export default function GsapCarousel({ items, step = 1, gap = 16, visibleItems = 8, cardFixedWidth = 200, skeleton = false }: CarouselProps) {
+export default function GsapCarousel({ items, step = 1, gap = 16, visibleItems = 10, cardFixedWidth = 200, skeleton = false }: CarouselProps) {
   const trackRef = useRef<HTMLDivElement | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const [index, setIndex] = useState(0);
+  const [mounted, setMounted] = useState(false);
 
   const visibleCount = visibleItems; // number of cards visible at once
 
@@ -54,6 +55,7 @@ export default function GsapCarousel({ items, step = 1, gap = 16, visibleItems =
 
   // Set wrapper width on the client after mount to avoid server/client markup mismatch.
   useEffect(() => {
+    setMounted(true);
     if (!wrapperRef.current) return;
 
     const updateWrapper = () => {
@@ -67,8 +69,13 @@ export default function GsapCarousel({ items, step = 1, gap = 16, visibleItems =
   }, [visibleCount, fixedWidth, gap]);
 
   return (
-    <div className="flex items-center gap-4 w-full">
-      <button onClick={handlePrev} className="mx-1 p-2  hover:bg-(--bg-light) rounded-full"><Image src='/icons/arrow-left_dark.png' alt="arrow-left" width={24} height={24}/></button>
+    <div className="w-full flex flex-col items-center md:items-stretch md:flex-row md:justify-center gap-4">
+      {/* Desktop: left button, track, right button */}
+      <div className="hidden md:flex items-center">
+        <button onClick={handlePrev} className="p-2 hover:opacity-60 bg-(--bg-light) rounded-full">
+          <Image src="/icons/arrow-left_dark.png" alt="arrow-left" width={24} height={24} />
+        </button>
+      </div>
 
       <div ref={wrapperRef} className="overflow-hidden">
         <div
@@ -77,14 +84,32 @@ export default function GsapCarousel({ items, step = 1, gap = 16, visibleItems =
           style={{ gap: `${gap}px` }}
         >
           {items.map((item, i) => (
-            <div key={i} className="shrink-0" style={{ width: fixedWidth }}>
+            <div
+              key={i}
+              className="shrink-0"
+              style={mounted ? { width: fixedWidth } : undefined}
+            >
               {item}
             </div>
           ))}
         </div>
       </div>
 
-      <button onClick={handleNext} className="mx-1 p-2  hover:bg-(--bg-light) rounded-full"><Image src='/icons/arrow-right_dark.png' alt="arrow-right" width={24} height={24}/></button>
+      <div className="hidden md:flex items-center">
+        <button onClick={handleNext} className="p-2 hover:opacity-60 bg-(--bg-light) rounded-full">
+          <Image src="/icons/arrow-right_dark.png" alt="arrow-right" width={24} height={24} />
+        </button>
+      </div>
+
+      {/* Mobile: buttons centered below the track */}
+      <div className="md:hidden mt-1 flex justify-center items-center gap-4 w-full">
+        <button onClick={handlePrev} className="p-2 hover:opacity-60 bg-(--bg-light) rounded-full">
+          <Image src="/icons/arrow-left_dark.png" alt="arrow-left" width={24} height={24} />
+        </button>
+        <button onClick={handleNext} className="p-2 hover:opacity-60 bg-(--bg-light) rounded-full">
+          <Image src="/icons/arrow-right_dark.png" alt="arrow-right" width={24} height={24} />
+        </button>
+      </div>
     </div>
   );
 }

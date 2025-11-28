@@ -19,7 +19,7 @@ const Navbar = () => {
 
   // Track screen size to handle desktop/mobile logic
   useEffect(() => {
-    const handleResize = () => setIsDesktop(window.innerWidth >= 768);
+    const handleResize = () => setIsDesktop(window.innerWidth >= 1400);
     handleResize(); // check on mount
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -34,8 +34,8 @@ const Navbar = () => {
     <>
       {/* Mobile toggle button */}
       {!isDesktop && (
-        <div className="w-10 flex justify-center items-center h-16 md:hidden">
-          <button onClick={() => setActive(prev => !prev)} className="shrink-0 md:hidden">
+        <div className="w-10 flex justify-center items-center h-16">
+          <button onClick={() => setActive(prev => !prev)} className="shrink-0">
             <Image src="/icons/list_dark.png" alt="list-icon" width={24} height={24} />
           </button>
         </div>
@@ -44,12 +44,12 @@ const Navbar = () => {
       {/* Navbar */}
       <div className={`
         ${!isDesktop && !active ? 'hidden' : ''}
-        w-60 h-full bg-bg-dark flex-col gap-2 px-2 py-5 rounded-tr-2xl rounded-br-2xl
+        w-56 h-full bg-bg-dark flex-col gap-2 px-2 py-5 rounded-tr-2xl rounded-br-2xl
         ${!isDesktop ? 'fixed top-0 left-0 z-50' : 'flex'}
       `}>
         {/* Mobile close button */}
         {!isDesktop && (
-          <button onClick={() => setActive(false)} className="shrink-0 mb-4">
+          <button onClick={() => setActive(false)} className="shrink-0 mb-4 mx-4 lg:mx-0">
             <Image src="/icons/list_dark.png" alt="close-icon" width={24} height={24} />
           </button>
         )}
@@ -58,7 +58,7 @@ const Navbar = () => {
           <Link
             key={item.id}
             href={item.href}
-            className="flex gap-4 text-base py-1 px-4 mt-2 hover:bg-[var(--bg-light)] rounded-2xl"
+            className="flex gap-4 text-base py-2 px-4 mt-2 hover:bg-(--bg-light) rounded-2xl"
           >
             <Image src={item.icon} alt={`${item.label}-icon`} width={24} height={24} />
             <span>{item.label}</span>
