@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Card from "@/components/Card";
 import CardSkeleton from "@/components/CardSkeleton";
 import Carousel from "@/components/Carousel";
-import {Anime, fetchTrendingAnime, fetchUpcomingAnime, fetchAllTimePopularAnime } from "../app/lib/anilist";
+import {Anime} from "../app/lib/anilist";
 import { useCardCount } from "./useCardCount";
 
 interface CarouselSectionProps {
@@ -54,7 +54,7 @@ export default function CarouselSection({ fetchMethod }: CarouselSectionProps) {
           />
         );
       })
-    : Array.from({ length: 10 }).map((_, i) => <CardSkeleton key={i} />);
+    : Array.from({ length: cardCount }).map((_, i) => <CardSkeleton key={i} />);
 
   return <Carousel cardFixedWidth={windowWidth <= 745 ? 120 : 200} items={items} step={cardCount} gap={16} visibleItems={cardCount} skeleton={!animeList} />;
 }
