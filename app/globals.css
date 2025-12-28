@@ -90,21 +90,24 @@ body {
   .skeleton-track > div:nth-child(-n+2) { display: block; }
 }
 
-/* match useCardCount: show 3 cards at >=400px */
 @media (min-width: 400px) {
   .skeleton-track > div:nth-child(-n+3) { display: block; }
 }
 
-/* match useCardCount: show 4 cards at >=600px */
 @media (min-width: 600px) {
   .skeleton-track > div:nth-child(-n+4) { display: block; }
 }
 
-@media (min-width: 745px) {
-  .skeleton-track > div:nth-child(-n+3) { display: block; }
+@media (min-width: 800px) {
+  .skeleton-track > div:nth-child(-n+5) { display: block; }
 }
 
-@media (min-width: 1000px) {
+@media (min-width: 915px) {
+  .skeleton-track > div:nth-child(-n+6) { display: block; }
+}
+
+/* match useCardCount: show 4 cards at >=1000px (overrides 915-999 range) */
+@media (min-width: 1025px) {
   .skeleton-track > div:nth-child(-n+4) { display: block; }
 }
 

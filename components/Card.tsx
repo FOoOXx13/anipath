@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Link from "next/link";
 
 interface CardProps {
     imageSrc?: string;
@@ -8,15 +8,17 @@ interface CardProps {
     animeEpisodes?: number | null;
     cardHeight?: number;
     imageHeight?: number;
+    animeId?: number;
 }
 
 
-const Card = ({imageSrc = '',  animeTitle = '', animeYear, animeEpisodes, cardHeight = 400, imageHeight = 300  }: CardProps) => {
+const Card = ({imageSrc = '',  animeTitle = '', animeYear, animeEpisodes, cardHeight = 400, imageHeight = 300, animeId,  }: CardProps) => {
   // common card class
   // h-[400px] w-full bg-bg-dark rounded-xl flex flex-col items-center 
 
   return (
-     <div
+     <Link
+       href={animeId ? `/anime/${animeId}` : '#'}
        className="w-full bg-bg-dark rounded-xl"
        style={{ height: cardHeight }}
      >
@@ -33,7 +35,7 @@ const Card = ({imageSrc = '',  animeTitle = '', animeYear, animeEpisodes, cardHe
         <span className="text-sm">{animeYear}</span>
         </div>
       </div>
-    </div>
+    </Link>
   )
 }
 

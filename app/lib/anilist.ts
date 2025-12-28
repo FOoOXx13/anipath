@@ -12,6 +12,21 @@ export interface Anime {
   seasonYear: number | null;
 }
 
+export interface AnimeDetails {
+  id: number;
+  title: {
+    romaji: string;
+    english: string | null;
+  };
+  coverImage: {
+    large: string;
+  };
+  description: string | null;
+  episodes: number | null;
+  season: string | null;
+  seasonYear: number | null;
+}
+
 export async function fetchTrendingAnime(page: number): Promise<Anime[]> {
   const query = `
     query ($page: Int, $perPage: Int) {
@@ -159,4 +174,39 @@ export async function fetchAllTimePopularAnime(page: number): Promise<Anime[]> {
   return json.data.Page.media as Anime[];
 }
 
+export async function fetchAnimeById(id: number): Promise<AnimeDetails | null> {
+  const query = `
+    query ($id: Int) {
+      Media(id: $id, type: ANIME) {
+        id
+        title {
+          romaji
+          english
+        }
+        coverImage {
+          large
+        }
+        description(asHtml: false)
+        episodes
+        season
+        seasonYear
+      }
+    }
+  `;
+
+  const variables = { id };
+
+  const response = await fetch("https://graphql.anilist.co", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query, variables }),
+    cache: "no-store",
+  });
+
+  const json = await response.json();
+  if (!json.data?.Media) return null;
+
+  
+  return json.data.Media as AnimeDetails;
+}
 

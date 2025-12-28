@@ -44,7 +44,7 @@ const Navbar = () => {
       {/* Navbar */}
       <div className={`
         ${!isDesktop && !active ? 'hidden' : ''}
-        w-56 h-full bg-bg-dark flex-col gap-2 px-2 py-5 rounded-tr-2xl rounded-br-2xl
+        w-56 h-full bg-bg-dark flex-col gap-2 px-2 py-5 
         ${!isDesktop ? 'fixed top-0 left-0 z-50' : 'flex'}
       `}>
         {/* Mobile close button */}

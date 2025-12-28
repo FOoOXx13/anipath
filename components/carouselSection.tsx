@@ -45,18 +45,19 @@ export default function CarouselSection({ fetchMethod }: CarouselSectionProps) {
         return (
           <Card
             key={anime.id}
+            animeId={anime.id}
             imageSrc={anime.coverImage.large}
-            animeTitle={windowWidth <= 745  ? shorterTitle : shortTitle}
+            animeTitle={windowWidth <= 1000  ? shorterTitle : shortTitle}
             animeYear={anime.seasonYear}
             animeEpisodes={anime.episodes}
-            cardHeight={windowWidth <= 745 ? 280 : 400}
-            imageHeight={windowWidth <= 745 ? 180 : 300}
+            cardHeight={windowWidth <= 1000  ? 280 : 400}
+            imageHeight={windowWidth <= 1000 ? 180 : 300}
           />
         );
       })
     : Array.from({ length: cardCount }).map((_, i) => <CardSkeleton key={i} />);
 
-  return <Carousel cardFixedWidth={windowWidth <= 745 ? 120 : 200} items={items} step={cardCount} gap={16} visibleItems={cardCount} skeleton={!animeList} />;
+  return <Carousel cardFixedWidth={windowWidth <= 1000 ? 120 : 200} items={items} step={cardCount} gap={16} visibleItems={cardCount} skeleton={!animeList} />;
 }
 
 
