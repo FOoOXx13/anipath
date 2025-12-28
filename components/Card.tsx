@@ -17,10 +17,11 @@ const Card = ({imageSrc = '',  animeTitle = '', animeYear, animeEpisodes, cardHe
   // h-[400px] w-full bg-bg-dark rounded-xl flex flex-col items-center 
 
   return (
+    <div className="w-full bg-bg-dark rounded-xl"
+    style={{ height: cardHeight }}>
+
      <Link
        href={animeId ? `/anime/${animeId}` : '#'}
-       className="w-full bg-bg-dark rounded-xl"
-       style={{ height: cardHeight }}
      >
       <img
         src={imageSrc}
@@ -36,6 +37,7 @@ const Card = ({imageSrc = '',  animeTitle = '', animeYear, animeEpisodes, cardHe
         </div>
       </div>
     </Link>
+    </div>
   )
 }
 
