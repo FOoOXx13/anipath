@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useLayoutEffect } from "react";
 
 export function useCardCount() {
   const getCount = () => {
@@ -25,7 +25,7 @@ export function useCardCount() {
   // The actual count is computed on the client in useEffect and will update after mount.
   const [cardCount, setCardCount] = useState<number>(() => 8);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const update = () => {
       const newCount = getCount();
       setCardCount((prev) => (prev !== newCount ? newCount : prev));

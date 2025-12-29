@@ -7,7 +7,6 @@ import {
 
 export default async function Home() {
 
-  await new Promise((resolve) => setTimeout(resolve, 500)); // Simulated delay
 
   const [trending, upcoming, popular] = await Promise.all([
     fetchTrendingAnime(1),

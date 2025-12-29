@@ -10,6 +10,13 @@ const link_items = [
     icon: '/icons/home_dark.png',
     label: 'Home'
   },
+  {
+    id: 2,
+    href: '/anime',
+    icon: '/icons/home_dark.png',
+
+    label: 'Anime'
+  },
   // Add more link items as needed
 ];
 
