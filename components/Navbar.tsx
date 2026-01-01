@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useEffect } from 'react';
+import { useNavbar } from './NavbarContextProvider';
 
 const link_items = [
   {
@@ -21,7 +22,7 @@ const link_items = [
 ];
 
 const Navbar = () => {
-  const [active, setActive] = useState(false);
+  const {active, setActive} = useNavbar();
   const [isDesktop, setIsDesktop] = useState(false);
 
   // Track screen size to handle desktop/mobile logic
@@ -39,25 +40,17 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Mobile toggle button */}
-      {!isDesktop && (
-        <div className="w-10 flex justify-center items-center h-16 ">
-          <button onClick={() => setActive(prev => !prev)} className="shrink-0">
-            <Image src="/icons/list_dark.png" alt="list-icon" width={24} height={24} />
-          </button>
-        </div>
-      )}
-
+ 
       {/* Navbar */}
       <div className={`
         ${!isDesktop && !active ? 'hidden' : ''}
-        w-56 h-full bg-bg-dark flex-col gap-2 px-2 py-5 
+        w-56 h-full bg-bg-dark flex-col gap-2 px-2 
         ${!isDesktop ? 'fixed top-0 left-0 z-50' : 'flex'}
       `}>
         {/* Mobile close button */}
         {!isDesktop && (
-          <button onClick={() => setActive(false)} className="shrink-0 mb-4 mx-4 lg:mx-0">
-            <Image src="/icons/list_dark.png" alt="close-icon" width={24} height={24} />
+          <button onClick={() => setActive(false)} className="shrink-0 w-56 h-16 px-4">
+            <Image src="/icons/list_dark.png" alt="close-icon" width={26} height={26} />
           </button>
         )}
 
