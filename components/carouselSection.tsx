@@ -9,42 +9,44 @@ import { useCardCount } from "@/components/useCardCount";
 interface CarouselSectionProps {
   animeList: Anime[];
   title?: string;
+  likedAnimeIds: number[];
 }
 
-export default function CarouselSection({ animeList, title }: CarouselSectionProps) {
+export default function CarouselSection({
+  animeList,
+  title,
+  likedAnimeIds,
+}: CarouselSectionProps) {
   const cardCount = useCardCount();
   const [windowWidth, setWindowWidth] = useState<number | null>(null);
 
-  // Measure BEFORE paint
   useLayoutEffect(() => {
-    const update = () => {
-      const width = window.innerWidth;
-      setWindowWidth(width);
-    };
-
+    const update = () => setWindowWidth(window.innerWidth);
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
   }, []);
 
   if (windowWidth === null || cardCount === null) {
-    return <div style={{ height: 420 }} />; 
+    return <div style={{ height: 420 }} />;
   }
 
   const isMobile = windowWidth <= 1000;
 
   const items = animeList.map((anime) => {
-    const title = anime.title.english || anime.title.romaji;
-    const short = title.length > 20 ? title.slice(0, 30) + "..." : title;
-    const shorter = title.length > 15 ? title.slice(0, 24) + "..." : title;
+    const titleText = anime.title.english || anime.title.romaji;
+    const displayTitle =
+      titleText.length > 20
+        ? titleText.slice(0, isMobile ? 24 : 30) + "..."
+        : titleText;
 
     return (
       <Card
         key={anime.id}
         animeId={anime.id}
         imageSrc={anime.coverImage.large}
-        animeTitle={isMobile ? shorter : short}
-        animeEpisodes={anime.episodes}
+        animeTitle={displayTitle}
+        liked={likedAnimeIds.includes(anime.id)}
       />
     );
   });
