@@ -21,7 +21,7 @@ export default function LikeBtn({ animeId, initialLiked }: LikeBtnProps) {
       return;
     }
 
-    // ✅ OPTIMISTIC UPDATE (instant UI)
+    // OPTIMISTIC UPDATE (instant UI)
     setLiked((prev) => !prev);
 
     startTransition(async () => {
@@ -32,13 +32,13 @@ export default function LikeBtn({ animeId, initialLiked }: LikeBtnProps) {
       });
 
       if (!res.ok) {
-        // ❌ rollback if server failed
+        // rollback if server failed
         setLiked((prev) => !prev);
         return;
       }
 
       const data = await res.json();
-      setLiked(data.liked); // final truth from server
+      setLiked(data.liked); 
     });
   };
 
