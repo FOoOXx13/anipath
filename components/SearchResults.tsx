@@ -1,6 +1,6 @@
 import { searchAnime } from "@/lib/anilist";
 import Card from "./Card";
-import { getLikedAnimeIds } from "./useLikedAnimeIds";
+import { getLikedAnimeIds } from "./getLikedAnimeIds";
 
 export default async function SearchResults({search,}: {search?: string;}) {
   

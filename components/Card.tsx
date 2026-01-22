@@ -1,14 +1,16 @@
 import Link from "next/link";
 import LikeBtn from "./LikeBtn";
+import SaveListBtn from "./SaveListBtn";
 
 interface CardProps {
   imageSrc?: string;
   animeTitle?: string | null;
   animeId?: number;
   liked: boolean;
+  saved: boolean;
 }
 
-const Card = ({ imageSrc = "", animeTitle = "", animeId, liked }: CardProps) => {
+const Card = ({ imageSrc = "", animeTitle = "", animeId, liked, saved }: CardProps) => {
   return (
     <div className="w-full bg-bg-dark rounded-xl h-60 min-[1000px]:h-[400px] flex flex-col">
       <Link href={animeId ? `/anime/${animeId}` : "#"}>
@@ -27,6 +29,8 @@ const Card = ({ imageSrc = "", animeTitle = "", animeId, liked }: CardProps) => 
 
         <div className="mt-auto flex justify-end">
           {animeId && <LikeBtn animeId={animeId} initialLiked={liked} />}
+            {animeId && <SaveListBtn animeId={animeId}  initialSaved={saved}/>}
+
         </div>
       </div>
     </div>

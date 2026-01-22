@@ -3,8 +3,8 @@ import mongoose, { Schema, Document, models } from "mongoose";
 
 export interface IAnime extends Document {
     animeId: number;
-    likes: string[]; // Clerk userIds
-    createdAt: Date;
+    likesCount:number; 
+    createdAt: Date; 
     updatedAt: Date;
 }
 
@@ -12,7 +12,7 @@ export interface IAnime extends Document {
 const AnimeSchema = new Schema<IAnime>(
 {
 animeId: { type: Number, required: true, unique: true },
-likes: { type: [String], default: [] },
+likesCount: { type: Number, default: 0, index: true },
 },
 { timestamps: true }
 );

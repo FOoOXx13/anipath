@@ -17,7 +17,7 @@ export default function LikeBtn({ animeId, initialLiked }: LikeBtnProps) {
 
   const toggleLike = () => {
     if (!isSignedIn) {
-      openSignIn();
+      openSignIn(); 
       return;
     }
 

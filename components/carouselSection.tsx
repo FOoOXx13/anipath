@@ -10,12 +10,14 @@ interface CarouselSectionProps {
   animeList: Anime[];
   title?: string;
   likedAnimeIds: number[];
+  savedAnimeIds: number[];
 }
 
 export default function CarouselSection({
   animeList,
   title,
   likedAnimeIds,
+  savedAnimeIds,  
 }: CarouselSectionProps) {
   const cardCount = useCardCount();
   const [windowWidth, setWindowWidth] = useState<number | null>(null);
@@ -47,6 +49,7 @@ export default function CarouselSection({
         imageSrc={anime.coverImage.large}
         animeTitle={displayTitle}
         liked={likedAnimeIds.includes(anime.id)}
+        saved={savedAnimeIds.includes(anime.id)}
       />
     );
   });
