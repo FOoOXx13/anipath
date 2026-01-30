@@ -2,6 +2,7 @@
 import { fetchAnimeById } from "@/lib/anilist"
 import AnimePageInfo from "@/components/AnimePageInfo";
 import Link from "next/link";
+import Image from "next/image";
 
 
 export default async function AnimePage({ params }: { params: any }) {
@@ -144,7 +145,7 @@ function getMonthName(month?: number) {
         
       </div>
       {anime.bannerImage ? 
-      <img src={anime.bannerImage} alt="banner image" width={1920} height={600}  className="w-full relative mask-image-to-bottom "/> : 
+      <Image src={anime.bannerImage} alt="banner image" width={1920} height={600}  className="w-full relative mask-image-to-bottom "/> : 
       <div className="w-full mt-16"></div>}
 
       <div className="flex flex-col justify-center items-center">
