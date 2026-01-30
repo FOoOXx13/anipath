@@ -1,55 +1,55 @@
 "use client";
 
-import {  useState, useTransition } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useAuth, useClerk } from "@clerk/nextjs";
+import SaveListModal from "./SaveListModal";
 
 interface SaveListBtnProps {
-    animeId:number;
-    initialSaved:boolean;
+  animeId: number;
+  initialSaved: boolean;
 }
 
-export default function SaveListBtn({animeId,initialSaved}: SaveListBtnProps) {
-    const [saved,setSaved] = useState(initialSaved);
-    const [isPending, startTransition] = useTransition();
+export default function SaveListBtn({ animeId, initialSaved }: SaveListBtnProps) {
+  const [open, setOpen] = useState(false);
+  const [coords, setCoords] = useState<{ top: number; left: number } | null>(null);
+  const { isSignedIn } = useAuth();
+  const { openSignIn } = useClerk();
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
-    const { isSignedIn } = useAuth();
-    const { openSignIn } = useClerk();
-
-    const toggleSaved = () => {
+  const handleToggle = () => {
     if (!isSignedIn) {
-      openSignIn(); 
+      openSignIn();
       return;
     }
 
-    setSaved((prev) => !prev);
+    if (buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      setCoords({
+        top: rect.bottom + window.scrollY + 4, // a little space below button
+        left: rect.left + window.scrollX,
+      });
+    }
 
-    startTransition(async () => {
-        const res = await fetch("/api/anime/save", {
-            method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ animeId  }),
-        });
+    setOpen(prev => !prev);
+  };
 
-        if(!res.ok) {
-            setSaved((prev) => !prev);
-            return;
-        }
-         const data = await res.json();
-        setSaved(data.saved); 
-    })
-    };
+  return (
+    <div className="relative inline-block">
+      <button
+        ref={buttonRef}
+        onClick={handleToggle}
+        className="text-xl hover:text-primary"
+      >
+        📂
+      </button>
 
-    return (
-         <button
-      onClick={toggleSaved}
-      disabled={isPending}
-      className="text-xl"
-    >
-      {saved ? "🔖" : "📑"}
-    </button>
-    )
-
-
-
+      {open && coords && (
+        <SaveListModal
+          animeId={animeId}
+          onClose={() => setOpen(false)}
+          coords={coords}
+        />
+      )}
+    </div>
+  );
 }
-

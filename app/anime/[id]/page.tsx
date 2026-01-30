@@ -145,7 +145,7 @@ function getMonthName(month?: number) {
         
       </div>
       {anime.bannerImage ? 
-      <Image src={anime.bannerImage} alt="banner image" width={1920} height={600}  className="w-full relative mask-image-to-bottom "/> : 
+      <Image src={anime.bannerImage} alt="banner image" width={1920} height={480}  className="w-full relative mask-image-to-bottom "/> : 
       <div className="w-full mt-16"></div>}
 
       <div className="flex flex-col justify-center items-center">
