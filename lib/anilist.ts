@@ -10,6 +10,7 @@ export interface Anime {
   episodes: number | null;
   season: string | null;
   seasonYear: number | null;
+  genres?: string[];
 }
 export interface AnimeDetails {
   id: number;
@@ -64,7 +65,6 @@ export interface AnimeDetails {
     }>;
   };
 
-  /** ✅ FIXED */
   externalLinks?: Array<{
     site: string;
     url: string;
@@ -93,6 +93,7 @@ export async function searchAnime(query: string) {
           }
           format
           seasonYear
+          genres
         }
       }
     }
@@ -157,6 +158,7 @@ export async function fetchTrendingAnime(page: number): Promise<Anime[]> {
           episodes
           season
           seasonYear
+          genres
         }
       }
     }
@@ -199,6 +201,7 @@ export async function fetchUpcomingAnime(page: number): Promise<Anime[]> {
           season
           seasonYear
           episodes
+          genres
         }
       }
     }
@@ -238,6 +241,7 @@ export async function fetchAllTimePopularAnime(page: number): Promise<Anime[]> {
       }
       seasonYear
       episodes
+      genres
     }
   }
 }
@@ -276,6 +280,7 @@ export async function fetchAnimeByIds(ids: number[]) {
           coverImage {
             large
           }
+          genres
         }
       }
     }

@@ -46,6 +46,7 @@ export default function CarouselSection({
         animeTitle={displayTitle}
         liked={likedAnimeIds.includes(anime.id)}
         saved={savedAnimeIds.includes(anime.id)}
+        genres={anime.genres}
       />
     );
   });
