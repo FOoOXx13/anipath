@@ -28,12 +28,12 @@ const Card = ({ imageSrc = "", animeTitle = "", animeId, liked, saved, genres }:
 
     {/* Overlay */}
     <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-      <div className="text-center font-bold gap-1 flex flex-wrap justify-center">
+      <div className="text-center font-bold gap-2 flex flex-wrap justify-center">
         {genres?.map((genre, idx) => (
           <div className="p-1" key={idx}>
             <span 
              onClick={() => router.push(`/genre/${genre.toLowerCase()}`)}
-            className="bg-(--color-accent) rounded-2xl p-1 "  >{genre}</span>
+            className="bg-(--color-accent) rounded-2xl p-2"  >{genre}</span>
           </div>
     ))}
       </div>
