@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useAuth, useClerk } from "@clerk/nextjs";
+import Image from "next/image";
 
 interface LikeBtnProps {
   animeId: number;
@@ -48,7 +49,11 @@ export default function LikeBtn({ animeId, initialLiked }: LikeBtnProps) {
       disabled={isPending}
       className="text-xl"
     >
-      {liked ? "❤️" : "🤍"}
+      {liked ? 
+        <Image src="/icons/like_dark_fill.png" alt="like_btn" width={24} height={24}/>
+      :
+        <Image src="/icons/like_dark.png" alt="like_btn" width={24} height={24}/>
+      }
     </button>
   );
 }

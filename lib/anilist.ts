@@ -278,7 +278,7 @@ export async function fetchAnimeByIds(ids: number[]) {
             english
           }
           coverImage {
-            large
+            extraLarge
           }
           genres
         }

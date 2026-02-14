@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import LikeBtn from "./LikeBtn";
 import SaveListBtn from "./SaveListBtn";
@@ -33,7 +35,7 @@ const Card = ({ imageSrc = "", animeTitle = "", animeId, liked, saved, genres }:
       <div className="p-1" key={idx}>
         <span
           onClick={(e) => {
-            e.preventDefault(); // prevents Link navigation when clicking genre
+            e.preventDefault();
             router.push(`/genre/${genre.toLowerCase()}`);
           }}
           className="bg-(--color-accent) rounded-2xl p-2 cursor-pointer"

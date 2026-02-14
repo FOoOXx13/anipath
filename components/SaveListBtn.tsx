@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useTransition } from "react";
 import { createPortal } from "react-dom";
 import { useAuth, useClerk } from "@clerk/nextjs";
+import Image from "next/image";
 
 interface ListItem {
   _id: string;
@@ -192,7 +193,7 @@ const createNewList = () => {
         onClick={handleToggle}
         className="text-xl hover:text-primary"
       >
-        📂
+        <Image src="/icons/bookmark_dark.png" alt="save_btn" width={24} height={24}/>
       </button>
 
       {mounted &&
@@ -213,21 +214,31 @@ const createNewList = () => {
 
     {/* Lists */}
     <div className="flex flex-col gap-2 max-h-60 overflow-y-auto pr-1">
-      {lists.map(list => (
-        <label
-          key={list._id}
-          className="flex items-center gap-2 text-sm cursor-pointer hover:bg-white/5 px-2 py-1 rounded"
-        >
-          <input
-            type="checkbox"
-            checked={list.contains}
-            onChange={() => toggleList(list._id)}
-            disabled={isPending}
-            className="accent-primary cursor-pointer"
-          />
-          {list.name}
-        </label>
-      ))}
+ <div className="flex flex-col gap-1 max-h-60 overflow-y-auto pr-1">
+  {lists.map(list => (
+    <button
+      key={list._id}
+      onClick={() => toggleList(list._id)}
+      disabled={isPending}
+      className="flex items-center justify-between gap-3 text-sm hover:bg-white/5 px-3 py-2 rounded-lg transition disabled:opacity-50"
+    >
+      <span className="truncate">{list.name}</span>
+
+      <Image
+        src={
+          list.contains
+            ? "/icons/bookmark_dark_fill.png"
+            : "/icons/bookmark_dark.png"
+        }
+        alt="bookmark"
+        width={18}
+        height={18}
+        className="opacity-90"
+      />
+    </button>
+  ))}
+</div>
+
     </div>
 
     {/* Divider */}
