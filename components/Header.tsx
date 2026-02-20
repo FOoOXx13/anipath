@@ -48,7 +48,7 @@ const Header = () => {
         <SignedIn>
           <UserButton afterSignOutUrl="/" />
           <SignOutButton>
-            <button className="px-4 py-2 bg-red-500 rounded-md">
+            <button className="px-4 py-2 bg-(--color-accent) rounded-md">
               Sign Out
             </button>
           </SignOutButton>

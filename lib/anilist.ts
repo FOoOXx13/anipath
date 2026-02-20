@@ -77,7 +77,7 @@ const ANILIST_URL = "https://graphql.anilist.co";
 export async function searchAnime(query: string) {
   const gql = `
     query ($search: String) {
-      Page(perPage: 20) {
+      Page(perPage: 50) {
         media(
           search: $search
           type: ANIME

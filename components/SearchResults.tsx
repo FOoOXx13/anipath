@@ -36,6 +36,7 @@ export default async function SearchResults({search,}: {search?: string;}) {
         imageSrc={anime.coverImage.large}
         animeTitle={displayTitle}
         animeId={anime.id}
+         genres={anime.genres}
         liked={likedAnimeIds.includes(anime.id)}
         saved={savedAnimeIds.includes(anime.id)}
       />

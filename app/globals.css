@@ -10,8 +10,6 @@
   --color-muted: hsl(0, 0%, 30%);
   --color-accent: hsl(118, 52%, 58%);
 
-
-
 }
 
 @media (prefers-color-scheme: dark) {
@@ -46,8 +44,6 @@
 }
 
 
-
-
 html {
   scrollbar-gutter: stable; /* prevents layout shift */
 }
@@ -74,7 +70,6 @@ html {
   background-color: rgba(170, 170, 170, 0.8);
 }
 
-/* Firefox */
 html {
   scrollbar-width: none;
 }

@@ -215,7 +215,7 @@ const createNewList = () => {
       <button
         ref={buttonRef}
         onClick={handleToggle}
-        className="text-xl hover:text-primary"
+        className="text-xl hover:text-primary flex "
       >
         <Image src="/icons/bookmark_dark.png" alt="save_btn" width={24} height={24}/>
       </button>
@@ -276,12 +276,12 @@ const createNewList = () => {
         value={newListName}
         onChange={(e) => setNewListName(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && createNewList()}
-        className="flex-1 px-1 py-2 border border-white/10 bg-black/30 text-white text-sm rounded-lg outline-none focus:border-primary"
+        className="flex-1 px-1 py-2 border border-white/10 bg-black/30 text-sm rounded-lg outline-none focus:border-primary"
       />
       <button
         onClick={createNewList}
         disabled={isPending || !newListName.trim()}
-        className="px-1 py-2 bg-primary rounded-lg text-white text-sm hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
+        className="px-1 py-2 bg-primary rounded-lg text-sm hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
       >
         Create
       </button>

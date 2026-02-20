@@ -3,6 +3,7 @@ import { fetchAnimeById } from "@/lib/anilist"
 import AnimePageInfo from "@/components/AnimePageInfo";
 import Link from "next/link";
 import Image from "next/image";
+import CommentSection from "@/components/CommentsSection";
 
 
 export default async function AnimePage({ params }: { params: any }) {
@@ -389,6 +390,8 @@ function getMonthName(month?: number) {
             </div>
 
                   <AnimePageInfo currentAnime={anime} />
+      <CommentSection animeId={anime.id}/>
+
                   
           </div>
 
@@ -397,7 +400,6 @@ function getMonthName(month?: number) {
 
       <div className="w-9/10 flex">
 
-    
             
       </div>
 

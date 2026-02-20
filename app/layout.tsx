@@ -41,7 +41,7 @@ export default function RootLayout({
             {/*Desktop layout */}
         <div className="hidden h-screen min-[1400px]:flex flex-1">
                   {/* Sidebar nav */}
-                <nav className="  ">
+                <nav className=" ">
                   <Navbar />
                 </nav>
          

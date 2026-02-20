@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import Card from "@/components/Card";
+import DeleteListBtn from "@/components/DeleteListBtn";
 
 async function getListAnime(listId: string) {
   const headersList = await headers();
@@ -23,31 +24,42 @@ export default async function ListAnimePage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = await params;   // ⭐ unwrap the promise
+  const { id } = await params;   
 
-  const animeList = await getListAnime(id);
+ const listData = await getListAnime(id);
+
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">My List</h1>
+    <div className="p-6 mt-8 flex flex-col items-center md:items-start md:mx-10">
+    <h1 className="text-2xl font-bold mb-6">
+  {listData.name} ({listData.anime?.length ?? 0})
+</h1>
+      {
+        !listData.isDefault && (
+      <DeleteListBtn listId={listData._id}/>
 
-      {animeList.length === 0 ? (
+        )
+      }
+
+      {listData.anime.length === 0 ? (
         <p>No anime in this list yet 👀</p>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {animeList.map((anime: any) => (
-            <Card
-              key={anime.id}
-              animeId={anime.id}
-              animeTitle={anime.title.english || anime.title.romaji}
-              imageSrc={anime.coverImage.extraLarge}
-              genres={anime.genres}
-              liked={false}
-              saved={true}
-            />
+        <div className="flex flex-wrap gap-6 w-fit justify-center md:justify-start">
+          {listData.anime.map((anime: any) => (
+            <div key={anime.id} className="w-[120px] min-[1000px]:w-[200px] h-60 min-[1000px]:h-[380px] mb-4" >
+              <Card
+                animeId={anime.id}
+                animeTitle={anime.title.english || anime.title.romaji}
+                imageSrc={anime.coverImage.extraLarge}
+                genres={anime.genres}
+                liked={false}
+                saved={true}
+              />
+            </div>
           ))}
         </div>
       )}
+
     </div>
   );
 }
