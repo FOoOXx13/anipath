@@ -26,17 +26,17 @@ if (!anime) {
   Crunchyroll: {
     label: "Crunchyroll",
     brandColor: "#F47521",
-    icon: "/icons/crunchyroll.svg",
+    icon: "/icons/crunchyroll.png",
   },
   Netflix: {
     label: "Netflix",
     brandColor: "#E50914",
-    icon: "/icons/netflix.svg",
+    icon: "/icons/netflix.png",
   },
   YouTube: {
     label: "YouTube",
     brandColor: "#FF0000",
-    icon: "/icons/youtube.svg",
+    icon: "/icons/youtube.png",
   },
   HIDIVE: {
     label: "HIDIVE",
@@ -46,77 +46,77 @@ if (!anime) {
   "Bilibili TV": {
     label: "Bilibili",
     brandColor: "#00A1D6",
-    icon: "/icons/bilibili.svg",
+    icon: "/icons/bilibili.png",
   },
   "Disney Plus": {
     label: "Disney+",
     brandColor: "#113CCF",
-    icon: "/icons/disneyplus.svg",
+    icon: "/icons/disneyplus.png",
   },
   Funimation: {
     label: "Funimation",
     brandColor: "#5B2D90",
-    icon: "/icons/funimation.svg",
+    icon: "/icons/funimation.png",
   },
   Wakanim: {
     label: "Wakanim",
     brandColor: "#FF0050",
-    icon: "/icons/wakanim.svg",
+    icon: "/icons/wakanim.png",
   },
   "Amazon Prime Video": {
     label: "Prime Video",
     brandColor: "#00A8E1",
-    icon: "/icons/primevideo.svg",
+    icon: "/icons/primevideo.png",
   },
   "Muse Asia": {
     label: "Muse Asia",
     brandColor: "#F6A623",
-    icon: "/icons/museasia.svg",
+    icon: "/icons/museasia.png",
   },
   "Ani-One Asia": {
     label: "Ani-One Asia",
     brandColor: "#F5A623",
-    icon: "/icons/anione.svg",
+    icon: "/icons/anione.png",
   },
   "Tencent Video": {
     label: "Tencent Video",
     brandColor: "#2FB1F2",
-    icon: "/icons/tencent.svg",
+    icon: "/icons/tencent.png",
   },
   IQIYI: {
     label: "iQIYI",
     brandColor: "#00C300",
-    icon: "/icons/iqiyi.svg",
+    icon: "/icons/iqiyi.png",
   },
   "ABEMA Video": {
     label: "Abema",
     brandColor: "#000000",
-    icon: "/icons/abema.svg",
+    icon: "/icons/abema.png",
   },
   "d Anime Store": {
     label: "d Anime Store",
     brandColor: "#FF6600",
-    icon: "/icons/danime.svg",
+    icon: "/icons/danime.png",
   },
   Hulu: {
     label: "Hulu",
     brandColor: "#1CE783",
-    icon: "/icons/hulu.svg",
+    icon: "/icons/hulu.png",
   },
   VRV: {
     label: "VRV",
     brandColor: "#F5C518",
-    icon: "/icons/vrv.svg",
+    icon: "/icons/vrv.png",
   },
   "U-NEXT": {
     label: "U-NEXT",
     brandColor: "#0061AE",
-    icon: "/icons/unext.svg",
+    icon: "/icons/unext.png",
   },
   "Official Site": {
     label: "Official Site",
     brandColor: "#4B5563",
-    icon: "/icons/link.svg",
+    icon: "/icons/link.png  ",
   },
 };
 
@@ -144,7 +144,7 @@ function getMonthName(month?: number) {
 
 
       {anime.bannerImage && (
-      <div className="relative w-full h-140 overflow-hidden">
+      <div className="relative w-full h-48 sm:h-64 md:h-96 lg:h-140 overflow-hidden">
         <Image
           src={anime.bannerImage}
           alt="banner"
@@ -156,26 +156,26 @@ function getMonthName(month?: number) {
       </div>
       )}
 
-      <div className="flex flex-col justify-center items-center">
+      <div className="flex flex-col items-start px-4 sm:px-6 w-full">
 
-      <div className="w-9/10 flex ">
+      <div className="w-full max-w-[2000px] lg:mx-10 flex flex-col md:flex-row gap-6 md:gap-8">
         
-          <div className={`w-[230px] ${anime.bannerImage ? 'mt-8' :""} shrink-0 `}>
-              <Image src={anime.coverImage.large} alt="cover image" width={230} height={345} className="rounded-2xl w-full h-auto" priority/>
+          <div className={`w-full md:w-[230px] ${anime.bannerImage ? 'mt-4 md:mt-8' : 'mt-4'} shrink-0 flex flex-col md:items-start`}>
+              <Image src={anime.coverImage.large} alt="cover image" width={230} height={345} className="rounded-2xl w-full max-w-[115px] sm:max-w-[230px] h-auto" priority/>
 
-              <div className="w-full flex justify-between">
+              <div className="w-full max-w-[230px] flex gap-2 md:flex-col mt-4 md:w-full">
 
-                  <button className="bg-(--color-accent)  w-1/2 text-xl p-2 mt-4 rounded-2xl">Add to list</button>
+                  <button className="flex-1 md:w-full bg-(--color-accent) text-sm sm:text-base md:text-lg px-3 py-2 rounded-lg md:rounded-2xl font-medium hover:opacity-90 transition-opacity">Add to list</button>
 
-                  <div className="w-1/2 mt-4 text-xl flex">
-                  <button className="ml-3 bg-(--color-accent) p-2 rounded-2xl"> like</button>
-                  <button className="ml-2 bg-(--color-accent) p-2 rounded-2xl"> like</button>
+                  <div className="flex gap-2 md:gap-0 md:w-full">
+                  <button className="flex-1 md:w-1/2 md:mt-3 bg-(--color-accent) px-3 py-2 rounded-lg md:rounded-2xl font-medium hover:opacity-90 transition-opacity">like</button>
+                  <button className="flex-1 md:w-1/2 md:mt-3 md:ml-3 bg-(--color-accent) px-3 py-2 rounded-lg md:rounded-2xl font-medium hover:opacity-90 transition-opacity">like</button>
                   </div>
 
               </div>
 
           {/* side info */}
-          <div className="flex flex-col justify-center my-4 w-[230px]">
+          <div className="hidden md:flex flex-col justify-center my-4 w-[230px] ">
 
             <div className="  px-2 rounded-2xl">
                 {anime.format && (
@@ -331,39 +331,40 @@ function getMonthName(month?: number) {
               
           </div>
 
-           <div className={`  mx-16 flex flex-col gap-4`} >
+           <div className={`flex-1 w-full flex flex-col gap-4 min-w-0`} >
 
-            <div className='flex flex-col min-h-82 justify-center gap-2 '>
-                  <h1 className="text-3xl font-bold">{anime.title.english}</h1>
-                  <div className="text-(--color-muted)" dangerouslySetInnerHTML={{ __html: anime.description ?? "" }} />
-                  <div className="flex flex-col gap-2">
+            <div className={`flex flex-col min-h-40 md:min-h-82 justify-center gap-2 ${anime.bannerImage ? `mt-4 md:mt-5` : `mt-4`} `}>
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold wrap-break-word">{anime.title.english}</h1>
+                  <div className="flex flex-col gap-3">
                   {anime.genres && anime.genres.length > 0 && (
-                  <div className="flex mt-4 items-center gap-4">
-                    <span className="text-xl font-bold">Genres:</span>
-                    <div className="text-(--color-muted) font-semibold flex items-center gap-2">
+                  <div className="flex flex-col sm:flex-row mt-4 sm:items-center gap-2 sm:gap-4">
+                    <span className="text-lg sm:text-xl font-bold shrink-0">Genres:</span>
+                    <div className="text-(--color-muted) font-semibold flex flex-wrap items-center gap-2">
                       {anime.genres.map((genre) => (
-                        <Link href="#" className="text-md " key={genre}>{genre}</Link>
+                        <Link href="#" className="text-sm sm:text-base px-2 py-1 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 transition-colors" key={genre}>{genre}</Link>
                       ))}
                     </div>
                   </div>
                     )}
-                    <div className="flex items-center gap-4">
-                    <span className="text-xl font-bold">Episodes:</span>
-                  <div className="text-(--color-muted) text-md  font-semibold flex items-center gap-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                    <span className="text-lg sm:text-xl font-bold shrink-0">Episodes:</span>
+                  <div className="text-(--color-muted) text-sm sm:text-base font-semibold flex items-center gap-2">
                     {anime.episodes ? anime.episodes : "N/A"}
                   </div>
 
                     </div>
 
-                    <div className="flex items-center gap-4">
-                    <span className="text-xl font-bold">Episode duration:</span>
-                  <div className="text-(--color-muted) text-md  font-semibold flex items-center gap-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                    <span className="text-lg sm:text-xl font-bold shrink-0">Episode duration:</span>
+                  <div className="text-(--color-muted) text-sm sm:text-base font-semibold flex items-center gap-2">
                     {anime.duration ? `${anime.duration} mins` : "N/A"}
                   </div>
                     </div>
 
-                    <div className="flex items-center gap-4">
-                  <div className="text-(--color-muted) text-md  font-semibold flex items-center gap-2">
+                    {streamingLinks.length > 0 && (
+                    <div className="flex flex-col gap-2">
+                      <span className="text-lg sm:text-xl font-bold">Watch on:</span>
+                  <div className="text-(--color-muted) text-sm sm:text-base font-semibold flex flex-wrap items-center gap-2">
                      {streamingLinks.map(link => {
                     const meta = PLATFORM_META[link.site];
 
@@ -373,11 +374,11 @@ function getMonthName(month?: number) {
                         href={link.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-3 py-1 rounded-xl text-white"
+                        className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-white text-xs sm:text-sm font-medium hover:opacity-90 transition-opacity"
                         style={{ background: meta.brandColor }}
                       >
                         {meta.icon && (
-                          <img src={meta.icon} className="w-5 h-5" />
+                          <img src={meta.icon} className="w-4 h-4 sm:w-5 sm:h-5" alt={meta.label} />
                         )}
                         <span>{meta.label}</span>
                       </Link>
@@ -385,20 +386,20 @@ function getMonthName(month?: number) {
                   })}
                   </div>
                     </div>
+                    )}
+                  <div className="text-(--color-muted) text-sm sm:text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: anime.description ?? "" }} />
               
             </div>
             </div>
 
                   <AnimePageInfo currentAnime={anime} />
-      <CommentSection animeId={anime.id}/>
-
                   
           </div>
 
 
       </div>
 
-      <div className="w-9/10 flex">
+      <div className="w-full max-w-7xl">
 
             
       </div>

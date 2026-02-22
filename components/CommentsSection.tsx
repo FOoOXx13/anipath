@@ -38,39 +38,41 @@ export default function CommentSection({ animeId }: { animeId: number }) {
   };
 
   return (
-    <div className="mt-10 max-w-xl">
+    <div className="mt-16 max-w-xl">
       {/* Input */}
-      <div className="flex gap-2">
-        <input
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Add a comment..."
-          className="flex-1 border px-3 py-2 rounded-lg"
-        />
-
+      <div className="flex items-start gap-2">
+        <textarea
+  value={text}
+  onChange={(e) => setText(e.target.value)}
+  placeholder="Add a comment..."
+  className="flex-1 px-3 py-2 rounded-lg border-none outline-none resize-none"
+/>
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="bg-blue-600 text-white px-4 rounded-lg"
+          className="bg-(--color-accent) px-4 py-2 rounded-lg"
         >
           {loading ? "Posting..." : "Comment"}
         </button>
       </div>
 
       {/* Comments */}
-      <div className="mt-6 space-y-4">
+      <div className="mt-6 ">
         {comments.map((c) => (
-          <div key={c._id} className="border-b pb-3">
-           <div className="flex items-center gap-2">
+          <div key={c._id} className="pb-6 flex gap-3">
   <img
-  src={c.imageUrl || "/default-avatar.png"}
-  alt="avatar"
-  className="w-8 h-8 rounded-full"
-/>
-  <p className="font-semibold">{c.username}</p>
+    src={c.imageUrl || "/default-avatar.png"}
+    alt="avatar"
+    className="w-10 h-10 rounded-full shrink-0"
+  />
+
+  <div className="flex-1 min-w-0">
+    <p className="font-semibold">{c.username}</p>
+    <p className="wrap-break-word whitespace-pre-wrap overflow-wrap-anywhere">
+      {c.text}
+    </p>
+  </div>
 </div>
-            <p>{c.text}</p>
-          </div>
         ))}
       </div>
     </div>
