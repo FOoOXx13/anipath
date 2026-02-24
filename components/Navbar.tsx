@@ -59,7 +59,7 @@ const Navbar = () => {
           fixed inset-0 z-40
           bg-black/50 backdrop-blur-sm
           transition-opacity duration-300
-          md:hidden
+          min-[1400px]:hidden
           ${active ? 'opacity-100' : 'opacity-0 pointer-events-none'}
         `}
       />
@@ -70,7 +70,7 @@ const Navbar = () => {
           fixed top-0 left-0 z-50
           w-56 h-full bg-bg-dark px-2 flex flex-col gap-2
           transition-transform duration-300 ease-in-out
-          md:hidden
+          min-[1400px]:hidden
           ${active ? 'translate-x-0' : '-translate-x-full'}
         `}
       >

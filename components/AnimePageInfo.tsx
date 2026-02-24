@@ -39,11 +39,11 @@ function getMonthName(month?: number) {
         return  <div>
 
 
-      <div className="w-full mt-6 md:mt-10">
+      <div className="w-full mt-6 md:mt-10 pr-4 md:pr-8 lg:pr-12 xl:pr-16">
       {currentAnime.trailer?.site === "youtube" && (
         <>
       <h2 className="text-2xl sm:text-3xl my-4 font-bold">Trailer</h2>
-        <div className="w-full max-w-5xl aspect-video rounded-2xl overflow-hidden mb-4">
+        <div className="w-full max-w-5xl aspect-video rounded-2xl overflow-hidden mb-4 ">
           <iframe
             src={`https://www.youtube.com/embed/${currentAnime.trailer.id}`}
             className="w-full h-full"
@@ -237,7 +237,7 @@ function getMonthName(month?: number) {
         </div>;
 
       case "Comments":
-        return <div>
+        return <div className="min-h-100">
       <CommentSection animeId={currentAnime.id}/>
           
         </div>;
