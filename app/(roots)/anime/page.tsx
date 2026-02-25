@@ -1,40 +1,38 @@
-import CarouselSection from "@/components/carouselSection";
-import {fetchTrendingAnime,fetchUpcomingAnime,fetchAllTimePopularAnime,} from "@/lib/anilist";
+import { fetchAnime } from "@/lib/anilist";
+import AnimeGrid from "@/components/AnimeGrid";
 import { getLikedAnimeIds } from "@/components/getLikedAnimeIds";
 import { getSavedAnimeIds } from "@/components/getSavedAmimeIds";
+import Pagination from "@/components/Pagination";
 
-export default async function Home() {
-  
-  const [trending,upcoming,popular, likedAnimeIds, savedAnimeIds] = await Promise.all([
-    fetchTrendingAnime(1),
-    fetchUpcomingAnime(1),
-    fetchAllTimePopularAnime(1),
-    getLikedAnimeIds(),
-    getSavedAnimeIds(),
-  ]);
+export default async function AnimePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const resolvedSearchParams = await Promise.resolve(searchParams);
+  const page = Number(resolvedSearchParams.page) || 1;
+
+  const [data, likedAnimeIds, savedAnimeIds] =
+    await Promise.all([
+       fetchAnime({ page, sort: "POPULARITY_DESC" }),
+      getLikedAnimeIds(),
+      getSavedAnimeIds(),
+    ]);
+
+  const { anime, pageInfo } = data;
 
   return (
-    <main className="flex flex-col justify-center items-center py-2 md:py-6 gap-2 min-[1001px]:gap-6">
-      <CarouselSection
-        animeList={trending}
-        title="TRENDING"
-        likedAnimeIds={likedAnimeIds}
-        savedAnimeIds={savedAnimeIds}
-
-      />
-      <CarouselSection
-        animeList={upcoming}
-        title="UPCOMING"
+    <main className="py-6 flex flex-col items-center gap-8">
+      <AnimeGrid
+        animeList={anime}
         likedAnimeIds={likedAnimeIds}
         savedAnimeIds={savedAnimeIds}
       />
 
-      <CarouselSection
-        animeList={popular}
-        title="ALL TIME POPULAR"
-        likedAnimeIds={likedAnimeIds}
-        savedAnimeIds={savedAnimeIds}
-
+      <Pagination
+        currentPage={pageInfo.currentPage}
+        lastPage={pageInfo.lastPage}
+        hasNextPage={pageInfo.hasNextPage}
       />
     </main>
   );

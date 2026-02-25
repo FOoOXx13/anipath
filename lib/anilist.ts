@@ -125,6 +125,17 @@ export interface AnimeDetails {
     }>;
   };
 }
+interface PageInfo {
+  total: number;
+  currentPage: number;
+  lastPage: number;
+  hasNextPage: boolean;
+}
+
+interface PaginatedAnimeResponse {
+  anime: Anime[];
+  pageInfo: PageInfo;
+}
 
 const ANILIST_URL = "https://graphql.anilist.co";
 
@@ -531,4 +542,66 @@ const query = `
   
   return json.data.Media as AnimeDetails;
 }
+
+export async function fetchAnime({
+  page = 1,
+  sort = "POPULARITY_DESC",
+}: {
+  page?: number;
+  sort?: string;
+}):  Promise<PaginatedAnimeResponse> {
+const query = `
+  query ($page: Int, $perPage: Int, $sort: [MediaSort]) {
+    Page(page: $page, perPage: $perPage) {
+      pageInfo {
+        total
+        currentPage
+        lastPage
+        hasNextPage
+      }
+      media(sort: $sort, type: ANIME) {
+        id
+        title {
+          english
+          romaji
+        }
+        coverImage {
+          large
+        }
+        seasonYear
+        episodes
+        genres
+      }
+    }
+  }
+`;
+
+  const response = await fetch("https://graphql.anilist.co", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      query,
+      variables: { page, perPage: 30, sort: [sort] },
+    }),
+    cache: "no-store",
+  });
+
+  const json = await response.json();
+  if (!response.ok || json?.errors || !json?.data?.Page) {
+    return {
+      anime: [],
+      pageInfo: {
+        total: 0,
+        currentPage: page,
+        lastPage: page,
+        hasNextPage: false,
+      },
+    };
+  }
+  return {
+    anime: json.data.Page.media,
+    pageInfo: json.data.Page.pageInfo,
+  };
+}
+
 
