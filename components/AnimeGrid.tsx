@@ -25,7 +25,7 @@ export default function AnimeGrid({
   return (
     <div className="w-full px-4 mt-12">
       <div
-        className="w-full flex flex-wrap justify-center gap-6 "
+        className="w-full flex flex-wrap justify-center gap-4 "
       >
         {animeList.map((anime) => {
           const displayTitle =
