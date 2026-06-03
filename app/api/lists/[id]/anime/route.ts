@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import connectDB from "@/lib/mongodb";
 import { List } from "@/lib/models/list";
-import { fetchAnimeByIds } from "@/lib/anilist";
+import { fetchMediaByIds } from "@/lib/anilist";
 
 export async function GET(req: Request,{params}: {params: Promise<{id: string}>}){
     const {userId} = await auth();
@@ -25,7 +25,7 @@ export async function GET(req: Request,{params}: {params: Promise<{id: string}>}
     }
 
     
-    const anime = await fetchAnimeByIds(list.animeIds);
+    const anime = await fetchMediaByIds(list.animeIds, "ANIME");
 
     return Response.json({
     _id: list._id.toString(), 

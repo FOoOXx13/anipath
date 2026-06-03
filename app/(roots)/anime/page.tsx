@@ -1,14 +1,14 @@
 import CarouselSection from "@/components/carouselSection";
-import {fetchTrendingAnime,fetchUpcomingAnime,fetchAllTimePopularAnime,} from "@/lib/anilist";
+import {fetchTrendingMedia,fetchUpcomingAnime,fetchAllTimePopularMedia,} from "@/lib/anilist";
 import { getLikedAnimeIds } from "@/components/getLikedAnimeIds";
 import { getSavedAnimeIds } from "@/components/getSavedAmimeIds";
 
 export default async function Home() {
   
   const [trending,upcoming,popular, likedAnimeIds, savedAnimeIds] = await Promise.all([
-    fetchTrendingAnime(1),
+    fetchTrendingMedia(1, "ANIME"),
     fetchUpcomingAnime(1),
-    fetchAllTimePopularAnime(1),
+    fetchAllTimePopularMedia(1, "ANIME"),
     getLikedAnimeIds(),
     getSavedAnimeIds(),
   ]);

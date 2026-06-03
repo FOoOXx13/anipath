@@ -1,9 +1,9 @@
-import { fetchAnimeById } from "@/lib/anilist";
+import { fetchMediaById } from "@/lib/anilist";
 import Link from "next/link";
 
 export default async function OverviewPage({ params }: { params: any }) {
   const resolvedParams = await Promise.resolve(params);
-  const anime = await fetchAnimeById(Number(resolvedParams.id));
+  const anime = await fetchMediaById(Number(resolvedParams.id), "ANIME");
 
   if (!anime) {
     return <div>Anime not found</div>;

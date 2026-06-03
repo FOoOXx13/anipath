@@ -1,4 +1,6 @@
-export interface Anime {
+export type MediaType = "ANIME" | "MANGA";
+
+export interface Media {
   id: number;
   title: {
     romaji: string;
@@ -7,12 +9,14 @@ export interface Anime {
   coverImage: {
     large: string;
   };
-  episodes: number | null;
-  season: string | null;
-  seasonYear: number | null;
+  episodes?: number | null;
+  chapters?: number | null;
+  volumes?: number | null;
+  season?: string | null;
+  seasonYear?: number | null;
   genres?: string[];
 }
-export interface AnimeDetails {
+export interface MediaDetails {
   id: number;
   title: {
     romaji: string;
@@ -24,19 +28,21 @@ export interface AnimeDetails {
     large: string;
     color?: string;
   };
-  bannerImage?: string;
   description?: string;
+  episodes?: number;
+  chapters?: number;
+  volumes?: number | null;
+  format?: string;
+  status?: string;
+  genres?: string[];
+  bannerImage?: string;
   averageScore?: number;
   popularity?: number;
-  episodes?: number;
   season?: string;
   seasonYear?: number;
-  format?: string;
   duration?: number;
-  status?: string;
   source?: string;
   hashtag?: string;
-  genres?: string[];
   synonyms?: string[];
 
   startDate: {
@@ -128,13 +134,13 @@ export interface AnimeDetails {
 
 const ANILIST_URL = "https://graphql.anilist.co";
 
-export async function searchAnime(query: string) {
+export async function searchMedia(query: string, type: MediaType) {
   const gql = `
-    query ($search: String) {
+    query ($search: String, $type: MediaType) {
       Page(perPage: 50) {
         media(
           search: $search
-          type: ANIME
+          type: $type
           sort: [POPULARITY_DESC]
         ) {
           id
@@ -158,13 +164,13 @@ export async function searchAnime(query: string) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       query: gql,
-      variables: { search: query },
+      variables: { search: query, type },
     }),
     next: { revalidate: 60 },
   });
 
   const json = await res.json();
-  return json.data.Page.media;
+  return json.data.Page.media as Media[];
 }
 
 
@@ -193,12 +199,12 @@ function getNextSeason() {
   return { season, year };
 }
 
-export async function fetchTrendingAnime(page: number): Promise<Anime[]> {
+export async function fetchTrendingMedia(page: number, type: MediaType): Promise<Media[]> {
   const query = `
-    query ($page: Int, $perPage: Int) {
+    query ($page: Int, $perPage: Int, $type: MediaType) {
       Page(page: $page, perPage: $perPage) {
         media(
-          type: ANIME
+          type: $type
           sort: TRENDING_DESC
         ) {
           id
@@ -210,6 +216,8 @@ export async function fetchTrendingAnime(page: number): Promise<Anime[]> {
             large
           }
           episodes
+          chapters
+          volumes
           season
           seasonYear
           genres
@@ -218,7 +226,7 @@ export async function fetchTrendingAnime(page: number): Promise<Anime[]> {
     }
   `;
 
-  const variables = { page, perPage: 50 };
+  const variables = { page, perPage: 50, type };
 
   const response = await fetch("https://graphql.anilist.co", {
     method: "POST",
@@ -228,10 +236,11 @@ export async function fetchTrendingAnime(page: number): Promise<Anime[]> {
   });
 
   const json = await response.json();
-  return json.data.Page.media as Anime[];
+  return json.data.Page.media as Media[];
 }
 
-export async function fetchUpcomingAnime(page: number): Promise<Anime[]> {
+//Only for anime, since manga doesn't have seasons
+export async function fetchUpcomingAnime(page: number): Promise<Media[]> {
   const { season, year } = getNextSeason();
 
   const query = `
@@ -275,16 +284,16 @@ export async function fetchUpcomingAnime(page: number): Promise<Anime[]> {
   // Safety checks
   if (!json.data?.Page?.media) return [];
 
-  return json.data.Page.media as Anime[];
+  return json.data.Page.media as Media[];
 }
 
-export async function fetchAllTimePopularAnime(page: number): Promise<Anime[]> {
+export async function fetchAllTimePopularMedia(page: number, type: MediaType): Promise<Media[]> {
   const { season, year } = getNextSeason();
 
   const query = `
-    query ($page: Int, $perPage: Int) {
+    query ($page: Int, $perPage: Int, $type: MediaType) {
   Page(page: $page, perPage: $perPage) {
-    media(sort: POPULARITY_DESC, type: ANIME) {
+    media(sort: POPULARITY_DESC, type: $type) {
       id
       title {
         english
@@ -302,7 +311,7 @@ export async function fetchAllTimePopularAnime(page: number): Promise<Anime[]> {
 
   `;
 
-  const variables = { page, perPage: 50, season, seasonYear: year };
+  const variables = { page, perPage: 50,type, season, seasonYear: year };
 
   const response = await fetch("https://graphql.anilist.co", {
     method: "POST",
@@ -316,16 +325,16 @@ export async function fetchAllTimePopularAnime(page: number): Promise<Anime[]> {
   // Safety checks
   if (!json.data?.Page?.media) return [];
 
-  return json.data.Page.media as Anime[];
+  return json.data.Page.media as Media[];
 }
 
-export async function fetchAnimeByIds(ids: number[]) {
+export async function fetchMediaByIds(ids: number[], type: MediaType ) {
   if (ids.length === 0) return [];
 
   const query = `
-    query ($ids: [Int]) {
+    query ($ids: [Int], $type: MediaType) {
       Page(perPage: 50) {
-        media(id_in: $ids, type: ANIME) {
+        media(id_in: $ids, type: $type) {
           id
           title {
             romaji
@@ -345,20 +354,20 @@ export async function fetchAnimeByIds(ids: number[]) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       query,
-      variables: { ids },
+      variables: { ids,type },
     }),
     next: { revalidate: 60 }, 
   });
 
   const json = await res.json();
-  return json.data.Page.media;
+  return json.data.Page.media as Media[];
 }
 
 
-export async function fetchAnimeById(id: number): Promise<AnimeDetails | null> {
+export async function fetchMediaById(id: number, type: MediaType): Promise<MediaDetails | null> {
 const query = `
-  query ($id: Int) {
-    Media(id: $id, type: ANIME) {
+  query ($id: Int, $type: MediaType) {
+    Media(id: $id, type: $type) {
       id
       idMal
 
@@ -368,11 +377,17 @@ const query = `
         native
       }
 
-    synonyms
+    episodes
+    chapters
+    volumes
 
     format
     status
-    episodes
+    genres
+
+
+    synonyms
+
     duration
     season
     seasonYear
@@ -436,7 +451,6 @@ const query = `
       }
     }
 
-      genres
       tags {
         name
         rank
@@ -516,19 +530,19 @@ const query = `
 `;
 
 
-  const variables = { id };
+  const variables = { id, type };
 
   const response = await fetch("https://graphql.anilist.co", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ query, variables }),
-    next: { revalidate: 60 }  // ⬅ cache for 60s
+    next: { revalidate: 60 }  //  cache for 60s
   });
 
   const json = await response.json();
   if (!json.data?.Media) return null;
 
   
-  return json.data.Media as AnimeDetails;
+  return json.data.Media as MediaDetails ?? null;
 }
 

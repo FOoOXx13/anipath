@@ -1,4 +1,4 @@
-import { fetchAnimeById } from "@/lib/anilist";
+import { fetchMediaById } from "@/lib/anilist";
 import Link from "next/link";
 import Image from "next/image";
 import { ReactNode } from "react";
@@ -12,7 +12,7 @@ export default async function AnimeLayout({
   children: ReactNode;
 }) {
   const resolvedParams = await Promise.resolve(params);
-  const anime = await fetchAnimeById(Number(resolvedParams.id));
+  const anime = await fetchMediaById(Number(resolvedParams.id), "ANIME");
 
   if (!anime) {
     return <div>Anime not found</div>;

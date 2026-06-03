@@ -1,4 +1,4 @@
-import { searchAnime } from "@/lib/anilist";
+import { searchMedia } from "@/lib/anilist";
 import Card from "./Card";
 import { getLikedAnimeIds } from "./getLikedAnimeIds";
 import { getSavedAnimeIds } from "./getSavedAmimeIds";
@@ -10,7 +10,7 @@ export default async function SearchResults({search,}: {search?: string;}) {
   }
 
   const [results, likedAnimeIds, savedAnimeIds] = await Promise.all([
-    searchAnime(search),
+    searchMedia(search, "ANIME"),
     getLikedAnimeIds(),
     getSavedAnimeIds(),
   ]);
