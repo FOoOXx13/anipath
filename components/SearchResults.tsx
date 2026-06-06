@@ -1,7 +1,7 @@
 import { searchMedia } from "@/lib/anilist";
 import Card from "./Card";
-import { getLikedAnimeIds } from "./getLikedAnimeIds";
-import { getSavedAnimeIds } from "./getSavedAmimeIds";
+import { getLikedMediaIds } from "./getLikedMediaIds";
+import { getSavedMediaIds } from "./getSavedMediaIds";
 
 export default async function SearchResults({search,}: {search?: string;}) {
   
@@ -11,8 +11,8 @@ export default async function SearchResults({search,}: {search?: string;}) {
 
   const [results, likedAnimeIds, savedAnimeIds] = await Promise.all([
     searchMedia(search, "ANIME"),
-    getLikedAnimeIds(),
-    getSavedAnimeIds(),
+    getLikedMediaIds("ANIME"),
+    getSavedMediaIds("ANIME"),
   ]);
 
   if (!results.length) {
@@ -34,11 +34,12 @@ export default async function SearchResults({search,}: {search?: string;}) {
     >
       <Card
         imageSrc={anime.coverImage.large}
-        animeTitle={displayTitle}
-        animeId={anime.id}
-         genres={anime.genres}
+        mediaTitle={displayTitle}
+        mediaId={anime.id}
+        genres={anime.genres}
         liked={likedAnimeIds.includes(anime.id)}
         saved={savedAnimeIds.includes(anime.id)}
+        type="ANIME"
       />
     </div>
   );

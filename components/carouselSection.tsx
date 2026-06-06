@@ -2,22 +2,24 @@
 
 import Card from "@/components/Card";
 import Carousel from "@/components/Carousel";
-import { Anime } from "../lib/anilist";
+import { Media, MediaType } from "../lib/anilist";
 import { useState, useLayoutEffect } from "react";
 import { useCardCount } from "@/components/useCardCount";
 
 interface CarouselSectionProps {
-  animeList: Anime[];
+  mediaList: Media[];
   title?: string;
-  likedAnimeIds: number[];
-  savedAnimeIds: number[];
+  likedMediaIds: number[];
+  savedMediaIds: number[];
+  type: MediaType;
 }
 
 export default function CarouselSection({
-  animeList,
+  mediaList,
   title,
-  likedAnimeIds,
-  savedAnimeIds,  
+  likedMediaIds,
+  savedMediaIds,
+  type,
 }: CarouselSectionProps) {
   const cardCount = useCardCount();
   const [windowWidth, setWindowWidth] = useState<number | null>(null);
@@ -35,18 +37,19 @@ export default function CarouselSection({
 
   const isMobile = windowWidth <= 1000;
 
-  const items = animeList.map((anime) => {
-   const displayTitle = anime.title.english || anime.title.romaji;
+  const items = mediaList.map((media) => {
+   const displayTitle = media.title.english || media.title.romaji;
 
     return (
       <Card
-        key={anime.id}
-        animeId={anime.id}
-        imageSrc={anime.coverImage.large}
-        animeTitle={displayTitle}
-        liked={likedAnimeIds.includes(anime.id)}
-        saved={savedAnimeIds.includes(anime.id)}
-        genres={anime.genres}
+        key={media.id}
+        mediaId={media.id}
+        imageSrc={media.coverImage.large}
+        mediaTitle={displayTitle}
+        liked={likedMediaIds.includes(media.id)}
+        saved={savedMediaIds.includes(media.id)}
+        genres={media.genres}
+        type={type}
       />
     );
   });

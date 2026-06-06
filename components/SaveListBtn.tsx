@@ -6,6 +6,7 @@ import { useAuth, useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
 import Image from "next/image";
+import { MediaType } from "@/lib/anilist";
 
 interface ListItem {
   _id: string;
@@ -15,12 +16,13 @@ interface ListItem {
 }
 
 interface SaveListBtnProps {
-  animeId: number;
+  mediaId: number;
+  mediaType: MediaType;
 }
 
 const OFFSET = 6;
 
-export default function SaveListBtn({ animeId }: SaveListBtnProps) {
+export default function SaveListBtn({ mediaId, mediaType }: SaveListBtnProps) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [ready, setReady] = useState(false);
@@ -78,13 +80,13 @@ useEffect(() => {
   }
 
   const load = async () => {
-    const res = await fetch(`/api/lists?animeId=${animeId}`);
+    const res = await fetch(`/api/lists?mediaId=${mediaId}&mediaType=${mediaType}`);
     const data = await res.json();
     setLists(data);
   };
 
   load();
-}, [open, animeId]);
+}, [open, mediaId, mediaType]);
 
 
   // Position calculation (after render) 
@@ -169,7 +171,7 @@ const toggleList = (listId: string) => {
     const res = await fetch("/api/lists/toggle", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ listId, animeId }),
+      body: JSON.stringify({ listId, mediaId, mediaType }),
     });
 
     if (!res.ok) {

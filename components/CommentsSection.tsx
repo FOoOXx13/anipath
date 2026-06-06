@@ -2,17 +2,17 @@
 
 import { useEffect, useState } from "react";
 
-export default function CommentSection({ animeId }: { animeId: number }) {
+export default function CommentSection({ mediaId }: { mediaId: number }) {
   const [text, setText] = useState("");
   const [comments, setComments] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
   // Fetch comments on mount
   useEffect(() => {
-    fetch(`/api/comments/${animeId}`)
+    fetch(`/api/comments/${mediaId}`)
       .then((res) => res.json())
       .then(setComments);
-  }, [animeId]);
+  }, [mediaId]);
 
   const handleSubmit = async () => {
     if (!text.trim()) return;
@@ -22,7 +22,7 @@ export default function CommentSection({ animeId }: { animeId: number }) {
     const res = await fetch("/api/comments", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ animeId, text }),
+      body: JSON.stringify({ mediaId, text }),
     });
 
     if (res.ok) {

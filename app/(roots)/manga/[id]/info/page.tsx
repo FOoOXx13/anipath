@@ -2,10 +2,10 @@ import { fetchMediaById } from "@/lib/anilist";
 
 export default async function InfoPage({ params }: { params: any }) {
   const resolvedParams = await Promise.resolve(params);
-  const anime = await fetchMediaById(Number(resolvedParams.id), "ANIME");
+  const manga = await fetchMediaById(Number(resolvedParams.id), "MANGA");
 
-  if (!anime) {
-    return <div>Anime not found</div>;
+  if (!manga) {
+    return <div>Manga not found</div>;
   }
 
   const MONTHS = [
@@ -31,80 +31,87 @@ export default async function InfoPage({ params }: { params: any }) {
   return (
     <div className="grid grid-cols-2 md:hidden justify-center my-4 w-full">
       <div className="px-2 rounded-2xl">
-        {anime.format && (
+        {manga.format && (
           <div className="flex flex-col">
             <span className="text-lg sm:text-xl font-bold">Format</span>
             <span className="text-(--color-muted) font-semibold text-sm sm:text-base">
-              {anime.format}
+              {manga.format}
             </span>
           </div>
         )}
       </div>
 
       <div className="mt-4 px-2 flex flex-col">
-        {anime.status && (
+        {manga.status && (
           <div>
             <span className="text-lg sm:text-xl font-bold">Status</span>
             <span className="text-(--color-muted) font-semibold text-sm sm:text-base block">
-              {anime.status}
+              {manga.status}
             </span>
           </div>
         )}
       </div>
 
       <div className="mt-4 px-2 flex flex-col">
-        {anime.season && (
-          <div>
-            <span className="text-lg sm:text-xl font-bold">Season</span>
-            <span className="text-(--color-muted) font-semibold text-sm sm:text-base block">
-              {anime.season} {anime.seasonYear}
-            </span>
-          </div>
-        )}
+        <div>
+          <span className="text-lg sm:text-xl font-bold">Chapters</span>
+          <span className="text-(--color-muted) font-semibold text-sm sm:text-base block">
+            {manga.chapters ? manga.chapters : "N/A"}
+          </span>
+        </div>
       </div>
 
       <div className="mt-4 px-2 flex flex-col">
-        {anime.startDate && (
+        <div>
+          <span className="text-lg sm:text-xl font-bold">Volumes</span>
+          <span className="text-(--color-muted) font-semibold text-sm sm:text-base block">
+            {manga.volumes ? manga.volumes : "N/A"}
+          </span>
+        </div>
+      </div>
+
+      <div className="mt-4 px-2 flex flex-col">
+        {manga.startDate && (
           <div>
             <span className="text-lg sm:text-xl font-bold">Start Date</span>
             <span className="text-(--color-muted) font-semibold text-sm sm:text-base block">
               {" "}
-              {getMonthName(anime.startDate.month)} {anime.startDate?.day}{" "}
-              {anime.startDate?.year}
+              {getMonthName(manga.startDate.month)} {manga.startDate?.day}{" "}
+              {manga.startDate?.year}
             </span>
           </div>
         )}
       </div>
 
       <div className="mt-4 px-2 flex flex-col">
-        {anime.endDate && (
+        {manga.endDate && (
           <div>
             <span className="text-lg sm:text-xl font-bold">End date</span>
             <span className="text-(--color-muted) font-semibold text-sm sm:text-base block">
-              {getMonthName(anime.endDate.month)} {anime.endDate?.day}{" "}
-              {anime.endDate?.year}
+              {getMonthName(manga.endDate.month)} {manga.endDate?.day}{" "}
+              {manga.endDate?.year}
             </span>
           </div>
         )}
       </div>
 
       <div className="mt-4 px-2 flex flex-col">
-        {anime.popularity && (
+        {manga.popularity && (
           <div>
             <span className="text-lg sm:text-xl font-bold">Popularity</span>
             <span className="text-(--color-muted) font-semibold text-sm sm:text-base block">
-              {anime.popularity}
+              {manga.popularity}
             </span>
           </div>
         )}
       </div>
 
       <div className="mt-4 px-2 flex flex-col">
-        {anime.studios?.nodes && anime.studios.nodes.length > 0 && (
+        {manga.studios?.nodes && manga.studios.nodes.length > 0 && (
           <div>
             <span className="text-lg sm:text-xl font-bold">Studios</span>
             <div className="text-(--color-muted) font-semibold flex flex-col text-sm sm:text-base">
-              {anime.studios.nodes.map((studio: any) => (
+              {manga.studios.nodes.map((studio: any) => (
                 <span key={studio.id}>{studio.name}</span>
               ))}
             </div>
@@ -113,11 +120,11 @@ export default async function InfoPage({ params }: { params: any }) {
       </div>
 
       <div className="mt-4 px-2 flex flex-col">
-        {anime.producers?.nodes && anime.producers.nodes.length > 0 && (
+        {manga.producers?.nodes && manga.producers.nodes.length > 0 && (
           <div>
             <span className="text-lg sm:text-xl font-bold">Producers</span>
             <div className="text-(--color-muted) font-semibold flex flex-col text-sm sm:text-base">
-              {anime.producers.nodes.map((producer: any) => (
+              {manga.producers.nodes.map((producer: any) => (
                 <span key={producer.id}>{producer.name}</span>
               ))}
             </div>
@@ -126,66 +133,66 @@ export default async function InfoPage({ params }: { params: any }) {
       </div>
 
       <div className="mt-4 px-2 flex flex-col">
-        {anime.source && (
+        {manga.source && (
           <div>
             <span className="text-lg sm:text-xl font-bold">Source</span>
             <span className="text-(--color-muted) font-semibold text-sm sm:text-base block">
-              {anime.source}
+              {manga.source}
             </span>
           </div>
         )}
       </div>
 
       <div className="mt-4 px-2 flex flex-col">
-        {anime.hashtag && (
+        {manga.hashtag && (
           <div>
             <span className="text-lg sm:text-xl font-bold">Hashtag</span>
             <span className="text-(--color-muted) font-semibold text-sm sm:text-base block break-all">
-              {anime.hashtag}
+              {manga.hashtag}
             </span>
           </div>
         )}
       </div>
 
       <div className="mt-4 px-2 flex flex-col">
-        {anime.title.romaji && (
+        {manga.title.romaji && (
           <div>
             <span className="text-lg sm:text-xl font-bold">Romaji</span>
             <span className="text-(--color-muted) font-semibold text-sm sm:text-base block wrap-break-word">
-              {anime.title.romaji}
+              {manga.title.romaji}
             </span>
           </div>
         )}
       </div>
 
       <div className="mt-4 px-2 flex flex-col">
-        {anime.title.english && (
+        {manga.title.english && (
           <div>
             <span className="text-lg sm:text-xl font-bold">English</span>
             <span className="text-(--color-muted) font-semibold text-sm sm:text-base block wrap-break-word">
-              {anime.title.english}
+              {manga.title.english}
             </span>
           </div>
         )}
       </div>
 
       <div className="mt-4 px-2 flex flex-col">
-        {anime.title.native && (
+        {manga.title.native && (
           <div>
             <span className="text-lg sm:text-xl font-bold">Native</span>
             <span className="text-(--color-muted) font-semibold text-sm sm:text-base block wrap-break-word">
-              {anime.title.native}
+              {manga.title.native}
             </span>
           </div>
         )}
       </div>
 
       <div className="mt-4 px-2 flex flex-col">
-        {anime.synonyms && anime.synonyms.length > 0 && (
+        {manga.synonyms && manga.synonyms.length > 0 && (
           <div>
             <span className="text-lg sm:text-xl font-bold">Synonyms</span>
             <div className="text-(--color-muted) font-semibold flex flex-col text-sm sm:text-base">
-              {anime.synonyms.map((synonym: any) => (
+              {manga.synonyms.map((synonym: any) => (
                 <span key={synonym} className="wrap-break-word">
                   {synonym}
                 </span>

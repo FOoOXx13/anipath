@@ -5,7 +5,8 @@ const CommentSchema = new mongoose.Schema(
     userId: { type: String, required: true },
     username: { type: String, required: true },  
     imageUrl: { type: String, required: true },   
-    animeId: { type: Number, required: true },
+    mediaId: { type: Number, required: false, index: true },
+    animeId: { type: Number, required: false },
     text: { type: String, required: true },
   },
   { timestamps: true }

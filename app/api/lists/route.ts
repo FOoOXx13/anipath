@@ -9,8 +9,15 @@ export async function GET(req: Request) {
     }
 
     const {searchParams} = new URL(req.url);
-    const animeIdParam = searchParams.get("animeId");
-    const animeId = animeIdParam ? Number(animeIdParam) : null;
+        const mediaIdParam = searchParams.get("mediaId");
+        const animeIdParam = searchParams.get("animeId");
+        const mediaTypeParam = searchParams.get("mediaType");
+        const mediaType = mediaTypeParam === "MANGA" ? "MANGA" : "ANIME";
+        const mediaId = mediaIdParam
+                ? Number(mediaIdParam)
+                : animeIdParam
+                    ? Number(animeIdParam)
+                    : null;
 
     await connectDB();
 
@@ -20,7 +27,11 @@ export async function GET(req: Request) {
         _id: list._id.toString(),
         name: list.name,
         isDefault: list.isDefault,
-        contains: animeId ? list.animeIds.includes(animeId) : false,
+                contains: mediaId
+                    ? mediaType === "MANGA"
+                        ? (list.mangaIds ?? []).includes(mediaId)
+                        : (list.animeIds ?? []).includes(mediaId)
+                    : false,
     }))
 
     return Response.json(response)
@@ -48,6 +59,7 @@ export async function POST(req: Request) {
         name: name.trim(),
         isDefault: false,
         animeIds: [],
+        mangaIds: [],
     });
 
     return new Response(JSON.stringify(newList), {

@@ -3,11 +3,23 @@ import connectDB from "@/lib/mongodb";
 import { List } from "@/lib/models/list";
 
 export async function POST(req: Request) {
-    const {animeId} = await req.json();
+    const { animeId, mediaId, mediaType } = await req.json();
+    const resolvedMediaId =
+      typeof mediaId === "number"
+        ? mediaId
+        : typeof animeId === "number"
+          ? animeId
+          : null;
+    const resolvedMediaType = mediaType === "MANGA" ? "MANGA" : "ANIME";
+    const listField = resolvedMediaType === "MANGA" ? "mangaIds" : "animeIds";
     const {userId} = await auth();
 
     if(!userId) {
           return new Response("Unauthorized", { status: 401 });
+    }
+
+    if (typeof resolvedMediaId !== "number") {
+      return new Response("Invalid payload", { status: 400 });
     }
 
     await connectDB();
@@ -23,16 +35,22 @@ export async function POST(req: Request) {
             name:"Saved",
             isDefault:true,
             animeIds:[],
+            mangaIds:[],
         })
     }
 
-const alreadySaved = savedList.animeIds.includes(animeId);
+const currentIds: number[] =
+  resolvedMediaType === "MANGA"
+    ? (savedList.mangaIds ?? [])
+    : (savedList.animeIds ?? []);
+
+const alreadySaved = currentIds.includes(resolvedMediaId);
 
 const result = await List.findOneAndUpdate(
   { _id: savedList._id },
   alreadySaved
-    ? { $pull: { animeIds: animeId } }
-    : { $addToSet: { animeIds: animeId } },
+    ? { $pull: { [listField]: resolvedMediaId } }
+    : { $addToSet: { [listField]: resolvedMediaId } },
   { new: true }
 );
 

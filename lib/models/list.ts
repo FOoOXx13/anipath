@@ -5,6 +5,7 @@ export interface IList extends Document {
     name:string;
     isDefault: boolean;
     animeIds: number[];
+    mangaIds: number[];
     createdAt: Date; 
     updatedAt: Date;
 }
@@ -15,8 +16,17 @@ const ListSchema = new Schema<IList>(
         name: {type: String, required: true},
         isDefault: {type: Boolean, default: false},
         animeIds: {type: [Number], default: []},
+        mangaIds: {type: [Number], default: []},
     },
     {timestamps: true}
 )
 
-export const List = models.List || mongoose.model<IList>("List", ListSchema);
+const existingListModel = models.List as mongoose.Model<IList> | undefined;
+
+if (existingListModel && !existingListModel.schema.path("mangaIds")) {
+    existingListModel.schema.add({
+        mangaIds: { type: [Number], default: [] },
+    });
+}
+
+export const List = existingListModel || mongoose.model<IList>("List", ListSchema);

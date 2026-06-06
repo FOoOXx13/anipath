@@ -10,9 +10,15 @@ export async function POST(req: Request) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const { animeId, text } = await req.json();
+  const { animeId, mediaId, text } = await req.json();
+  const resolvedMediaId =
+    typeof mediaId === "number"
+      ? mediaId
+      : typeof animeId === "number"
+        ? animeId
+        : null;
 
-  if (!animeId || !text?.trim()) {
+  if (!resolvedMediaId || !text?.trim()) {
     return new Response("Invalid data", { status: 400 });
   }
 
@@ -26,7 +32,7 @@ export async function POST(req: Request) {
     userId,
     username: user.username || user.firstName || "User",
     imageUrl: user.imageUrl,
-    animeId,
+    mediaId: resolvedMediaId,
     text,
   });
 
@@ -35,7 +41,7 @@ export async function POST(req: Request) {
     userId: comment.userId,
     username: comment.username,
     imageUrl: comment.imageUrl,
-    animeId: comment.animeId,
+    mediaId: comment.mediaId,
     text: comment.text,
     createdAt: comment.createdAt,
   });

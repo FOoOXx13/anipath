@@ -349,18 +349,37 @@ export async function fetchMediaByIds(ids: number[], type: MediaType ) {
     }
   `;
 
-  const res = await fetch("https://graphql.anilist.co", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      query,
-      variables: { ids,type },
-    }),
-    next: { revalidate: 60 }, 
-  });
+  const chunkSize = 50;
+  const chunks: number[][] = [];
 
-  const json = await res.json();
-  return json.data.Page.media as Media[];
+  for (let i = 0; i < ids.length; i += chunkSize) {
+    chunks.push(ids.slice(i, i + chunkSize));
+  }
+
+  const pages = await Promise.all(
+    chunks.map(async (chunk) => {
+      const res = await fetch("https://graphql.anilist.co", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          query,
+          variables: { ids: chunk, type },
+        }),
+        next: { revalidate: 60 },
+      });
+
+      const json = await res.json();
+      return (json?.data?.Page?.media ?? []) as Media[];
+    })
+  );
+
+  const merged = pages.flat();
+  const byId = new Map<number, Media>();
+  for (const media of merged) {
+    byId.set(media.id, media);
+  }
+
+  return ids.map((id) => byId.get(id)).filter((item): item is Media => Boolean(item));
 }
 
 

@@ -83,7 +83,7 @@ export default function GsapCarousel({
       {/* Desktop Prev */}
       <button
         onClick={handlePrev}
-        className="hidden md:flex p-2 hover:opacity-60 bg-(--bg-light) rounded-full"
+        className="hidden md:flex p-2 hover:opacity-60 bg-bg-light rounded-full"
       >
         <Image src="/icons/arrow-left_dark.png" alt="Prev" width={24} height={24} />
       </button>
@@ -109,7 +109,7 @@ export default function GsapCarousel({
       {/* Desktop Next */}
       <button
         onClick={handleNext}
-        className="hidden md:flex p-2 hover:opacity-60 bg-(--bg-light) rounded-full"
+        className="hidden md:flex p-2 hover:opacity-60 bg-bg-light rounded-full"
       >
         <Image src="/icons/arrow-right_dark.png" alt="Next" width={24} height={24} />
       </button>
@@ -118,14 +118,14 @@ export default function GsapCarousel({
       <div className="md:hidden  flex gap-4">
         <button
           onClick={handlePrev}
-          className="p-2 hover:opacity-60 bg-(--bg-light) rounded-full"
+          className="p-2 hover:opacity-60 bg-bg-light rounded-full"
         >
           <Image src="/icons/arrow-left_dark.png" alt="Prev" width={24} height={24} />
         </button>
 
         <button
           onClick={handleNext}
-          className="p-2 hover:opacity-60 bg-(--bg-light) rounded-full"
+          className="p-2 hover:opacity-60 bg-bg-light rounded-full"
         >
           <Image src="/icons/arrow-right_dark.png" alt="Next" width={24} height={24} />
         </button>

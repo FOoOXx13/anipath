@@ -3,25 +3,30 @@ import Link from "next/link";
 import LikeBtn from "./LikeBtn";
 import SaveListBtn from "./SaveListBtn";
 import GenreTag from "./GenreTag";
+import { MediaType } from "@/lib/anilist";
 
 interface CardProps {
   imageSrc?: string;
-  animeTitle?: string | null;
-  animeId?: number;
-  genres?:string[];
+  mediaTitle?: string | null;
+  mediaId?: number;
+  genres?: string[];
   liked: boolean;
   saved: boolean;
+  type: MediaType; 
 }
 
 
-const Card = ({ imageSrc = "", animeTitle = "", animeId, liked, saved, genres }: CardProps) => {
+const Card = ({ imageSrc = "", mediaTitle = "", mediaId, liked, saved, genres,type }: CardProps) => {
+
+  const basePath = type === "ANIME" ? "anime" : "manga";
+  
   return (
    <div className="w-full bg-bg-dark rounded-xl h-66 min-[1000px]:h-[400px] flex flex-col group relative ">
-  <Link href={animeId ? `/anime/${animeId}/overview` : "#"} className="relative overflow-hidden rounded-xl">
+  <Link href={mediaId ? `/${basePath}/${mediaId}/overview` : "#"} className="relative overflow-hidden rounded-xl">
     {/* Image */}
     <img
       src={imageSrc}
-      alt="anime title"
+      alt={mediaTitle || "anime title"}
       className="w-full h-[180px] min-[1000px]:h-[300px] object-cover rounded-xl transition-transform duration-300 group-hover:scale-105 group-hover:brightness-80 transform-gpu"
       style={{ background: "var(--bg-light)", transformOrigin: "center top" }}
     />
@@ -43,12 +48,12 @@ const Card = ({ imageSrc = "", animeTitle = "", animeId, liked, saved, genres }:
   {/* Title and Buttons */}
   <div className="w-full flex flex-col flex-1 px-1 min-[1001px]:px-4 my-2">
     <h3 className="text-sm line-clamp-2 leading-tight min-[1001px]:text-lg font-semibold">
-      {animeTitle}
+      {mediaTitle}
     </h3>
 
     <div className="mt-auto flex justify-end gap-2">
-      {animeId && <LikeBtn animeId={animeId} initialLiked={liked} />}
-      {animeId && <SaveListBtn animeId={animeId} />}
+      {mediaId && <LikeBtn mediaId={mediaId} mediaType={type} initialLiked={liked} />}
+      {mediaId && <SaveListBtn mediaId={mediaId} mediaType={type} />}
     </div>
   </div>
 </div>

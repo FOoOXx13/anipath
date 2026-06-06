@@ -1,18 +1,30 @@
 import CarouselSection from "@/components/carouselSection";
 import {fetchTrendingMedia,fetchUpcomingAnime,fetchAllTimePopularMedia,} from "@/lib/anilist";
-import { getLikedAnimeIds } from "@/components/getLikedAnimeIds";
-import { getSavedAnimeIds } from "@/components/getSavedAmimeIds";
+import { getLikedMediaIds } from "@/components/getLikedMediaIds";
+import { getSavedMediaIds } from "@/components/getSavedMediaIds";
 
 export default async function Home() {
   
-  const [trendingAnime,upcoming,popularAnime, likedAnimeIds, savedAnimeIds, trendingManga, popularManga] = await Promise.all([
+  const [
+    trendingAnime,
+    upcoming,
+    popularAnime,
+    likedAnimeIds,
+    savedAnimeIds,
+    trendingManga,
+    popularManga,
+    likedMangaIds,
+    savedMangaIds,
+  ] = await Promise.all([
     fetchTrendingMedia(1, "ANIME"),
     fetchUpcomingAnime(1),
     fetchAllTimePopularMedia(1, "ANIME"),
-    getLikedAnimeIds(),
-    getSavedAnimeIds(),
+    getLikedMediaIds("ANIME"),
+    getSavedMediaIds("ANIME"),
     fetchTrendingMedia(1, "MANGA"),
     fetchAllTimePopularMedia(1, "MANGA"),
+    getLikedMediaIds("MANGA"),
+    getSavedMediaIds("MANGA"),
 
 
   ]);
@@ -20,39 +32,52 @@ export default async function Home() {
   return (
     <main className="flex flex-col justify-center items-center py-2 md:py-6 gap-2 min-[1001px]:gap-6">
       <CarouselSection
-        animeList={trendingAnime}
+        mediaList={trendingAnime}
         title="TRENDING ANIME"
-        likedAnimeIds={likedAnimeIds}
-        savedAnimeIds={savedAnimeIds}
+        likedMediaIds={likedAnimeIds}
+        savedMediaIds={savedAnimeIds}
+        type="ANIME"
 
       />
       <CarouselSection
-        animeList={upcoming}
+        mediaList={upcoming}
         title="UPCOMING ANIME"
-        likedAnimeIds={likedAnimeIds}
-        savedAnimeIds={savedAnimeIds}
+        likedMediaIds={likedAnimeIds}
+        savedMediaIds={savedAnimeIds}
+        type="ANIME"
+
+      />
+      <CarouselSection
+        mediaList={upcoming}
+        title="UPCOMING ANIME"
+        likedMediaIds={likedAnimeIds}
+        savedMediaIds={savedAnimeIds}
+        type="ANIME"
       />
 
       <CarouselSection
-        animeList={popularAnime}
+        mediaList={popularAnime}
         title="ALL TIME POPULAR ANIME"
-        likedAnimeIds={likedAnimeIds}
-        savedAnimeIds={savedAnimeIds}
+        likedMediaIds={likedAnimeIds}
+        savedMediaIds={savedAnimeIds}
+        type="ANIME"
 
       />
           <CarouselSection
-        animeList={trendingManga}
+        mediaList={trendingManga}
         title="TRENDING MANGA"
-        likedAnimeIds={likedAnimeIds}
-        savedAnimeIds={savedAnimeIds}
+        likedMediaIds={likedMangaIds}
+        savedMediaIds={savedMangaIds}
+        type="MANGA"
 
       />
 
             <CarouselSection
-        animeList={popularManga}
+        mediaList={popularManga}
         title="ALL TIME POPULAR MANGA"
-        likedAnimeIds={likedAnimeIds}
-        savedAnimeIds={savedAnimeIds}
+          likedMediaIds={likedMangaIds}
+          savedMediaIds={savedMangaIds}
+        type="MANGA"
 
       />
       

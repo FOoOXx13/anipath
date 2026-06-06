@@ -10,19 +10,21 @@ interface NavigationItem {
 
 interface AnimeNavigationTabsProps {
   navigationItems: NavigationItem[];
-  animeId: number;
+  mediaId: number;
+  basePath?: "anime" | "manga";
 }
 
 export default function AnimeNavigationTabs({
   navigationItems,
-  animeId,
+  mediaId,
+  basePath = "anime",
 }: AnimeNavigationTabsProps) {
   const pathname = usePathname();
 
   return (
     <div className="w-full flex items-center gap-2 sm:gap-4 lg:gap-8 overflow-x-auto mt-4 md:mt-6">
       {navigationItems.map((item) => {
-        const href = `/anime/${animeId}/${item.href}`;
+        const href = `/${basePath}/${mediaId}/${item.href}`;
         const isActive = pathname === href;
 
         return (

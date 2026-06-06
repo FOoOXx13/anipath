@@ -8,9 +8,16 @@ export async function POST(req: Request) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const { listId, animeId } = await req.json();
+  const { listId, mediaId, animeId, mediaType } = await req.json();
+  const resolvedMediaType = mediaType === "MANGA" ? "MANGA" : "ANIME";
+  const resolvedMediaId =
+    typeof mediaId === "number"
+      ? mediaId
+      : typeof animeId === "number"
+        ? animeId
+        : null;
 
-  if (!listId || typeof animeId !== "number") {
+  if (!listId || typeof resolvedMediaId !== "number") {
     return new Response("Invalid payload", { status: 400 });
   }
 
@@ -21,13 +28,16 @@ export async function POST(req: Request) {
     return new Response("List not found", { status: 404 });
   }
 
-  const alreadyInList = list.animeIds.includes(animeId);
+  const field = resolvedMediaType === "MANGA" ? "mangaIds" : "animeIds";
+  const existingIds: number[] =
+    resolvedMediaType === "MANGA" ? (list.mangaIds ?? []) : (list.animeIds ?? []);
+  const alreadyInList = existingIds.includes(resolvedMediaId);
 
   await List.updateOne(
     { _id: listId },
     alreadyInList
-      ? { $pull: { animeIds: animeId } }
-      : { $addToSet: { animeIds: animeId } }
+      ? { $pull: { [field]: resolvedMediaId } }
+      : { $addToSet: { [field]: resolvedMediaId } }
   );
 
   return Response.json({ saved: !alreadyInList });

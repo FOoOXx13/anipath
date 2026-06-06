@@ -3,15 +3,19 @@
 import { useState, useTransition } from "react";
 import { useAuth, useClerk } from "@clerk/nextjs";
 import Image from "next/image";
+import { MediaType } from "@/lib/anilist";
+import { useRouter } from "next/navigation";
 
 interface LikeBtnProps {
-  animeId: number;
+  mediaId: number;
+  mediaType: MediaType;
   initialLiked: boolean;
 }
 
-export default function LikeBtn({ animeId, initialLiked }: LikeBtnProps) {
+export default function LikeBtn({ mediaId, mediaType, initialLiked }: LikeBtnProps) {
   const [liked, setLiked] = useState(initialLiked);
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const { isSignedIn } = useAuth();
   const { openSignIn } = useClerk();
@@ -26,10 +30,10 @@ export default function LikeBtn({ animeId, initialLiked }: LikeBtnProps) {
     setLiked((prev) => !prev);
 
     startTransition(async () => {
-      const res = await fetch("/api/anime/like", {
+      const res = await fetch("/api/media/like", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ animeId }),
+        body: JSON.stringify({ mediaId, mediaType }),
       });
 
       if (!res.ok) {
@@ -40,6 +44,7 @@ export default function LikeBtn({ animeId, initialLiked }: LikeBtnProps) {
 
       const data = await res.json();
       setLiked(data.liked); 
+      router.refresh();
     });
   };
 

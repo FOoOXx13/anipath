@@ -51,6 +51,22 @@ export async function POST(req: Request) {
       animeIds: [],
       mangaIds: [],
     });
+  } else {
+    const needsAnimeIds = !Array.isArray(likedList.animeIds);
+    const needsMangaIds = !Array.isArray(likedList.mangaIds);
+
+    if (needsAnimeIds || needsMangaIds) {
+      await List.updateOne(
+        { _id: likedList._id },
+        {
+          $set: {
+            ...(needsAnimeIds ? { animeIds: [] } : {}),
+            ...(needsMangaIds ? { mangaIds: [] } : {}),
+          },
+        }
+      );
+      likedList = await List.findById(likedList._id);
+    }
   }
 
   const currentIds: number[] =
