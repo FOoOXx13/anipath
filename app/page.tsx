@@ -47,13 +47,7 @@ export default async function Home() {
         type="ANIME"
 
       />
-      <CarouselSection
-        mediaList={upcoming}
-        title="UPCOMING ANIME"
-        likedMediaIds={likedAnimeIds}
-        savedMediaIds={savedAnimeIds}
-        type="ANIME"
-      />
+
 
       <CarouselSection
         mediaList={popularAnime}

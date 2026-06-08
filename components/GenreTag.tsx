@@ -2,16 +2,17 @@
 
 import { useRouter } from "next/navigation";
 
-export default function GenreTag({ genre }: { genre: string }) {
+export default function GenreTag({ genre,color }: { genre: string; color?: string | null  }) {
   const router = useRouter();
 
   return (
     <span
-      onClick={(e) => {
-        e.preventDefault();
-        router.push(`/genre/${genre.toLowerCase()}`);
-      }}
-      className="bg-(--color-accent) rounded-2xl p-2 cursor-pointer"
+    
+      className=" rounded-2xl p-2 cursor-pointer"
+       style={{
+    backgroundColor: color ?? "var(--color-accent)", 
+    color: "#fff"
+  }}
     >
       {genre}
     </span>

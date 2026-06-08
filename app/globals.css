@@ -10,7 +10,7 @@
 
   --foreground: hsl(0, 0%, 5%);
   --color-muted: hsl(0, 0%, 30%);
-  --color-accent: hsl(118, 52%, 58%);
+  --color-accent: hsl(174, 60%, 50%);
 }
 
 
@@ -25,7 +25,7 @@ html[data-theme="dark"] {
 
   --foreground: hsl(0, 0%, 95%);
   --color-muted: hsl(0, 0%, 70%);
-  --color-accent: hsl(118, 52%, 58%);
+  --color-accent: hsl(174, 60%, 50%);
 }
 
 @theme inline {
@@ -83,12 +83,6 @@ body {
   color: var(--color-foreground);
   font-family: var(--font-body);
 }
-
-
-.mask-image-to-bottom {
-  mask-image: linear-gradient(to bottom, var(--color-background) 70%, transparent 100%);
-}
-
 /* loader */
 .loader {
     width: 150px;
@@ -102,5 +96,18 @@ body {
 }
 @keyframes l13{ 
   100%{transform: rotate(1turn)}
+}
+
+/* Card image hover zoom — uses transform (not individual scale) to avoid
+   subpixel compositing-layer snap that makes some images shift sideways */
+.card-img {
+  transform: translateZ(0) scale(1);
+  transition: transform 300ms ease-out;
+  backface-visibility: hidden;
+  transform-origin: center center;
+}
+
+.group:hover .card-img {
+  transform: translateZ(0) scale(1.05);
 }
 

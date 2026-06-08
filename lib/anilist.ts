@@ -8,6 +8,7 @@ export interface Media {
   };
   coverImage: {
     large: string;
+    color?: string | null;
   };
   episodes?: number | null;
   chapters?: number | null;
@@ -150,6 +151,7 @@ export async function searchMedia(query: string, type: MediaType) {
           }
           coverImage {
             large
+             color
           }
           format
           seasonYear
@@ -214,6 +216,7 @@ export async function fetchTrendingMedia(page: number, type: MediaType): Promise
           }
           coverImage {
             large
+             color
           }
           episodes
           chapters
@@ -260,6 +263,7 @@ export async function fetchUpcomingAnime(page: number): Promise<Media[]> {
           }
           coverImage {
             large
+            color
           }
           season
           seasonYear
@@ -301,6 +305,7 @@ export async function fetchAllTimePopularMedia(page: number, type: MediaType): P
       }
       coverImage {
         large
+        color
       }
       seasonYear
       episodes
@@ -342,6 +347,7 @@ export async function fetchMediaByIds(ids: number[], type: MediaType ) {
           }
           coverImage {
             extraLarge
+             color
           }
           genres
         }

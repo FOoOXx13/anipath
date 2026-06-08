@@ -13,36 +13,40 @@ interface CardProps {
   liked: boolean;
   saved: boolean;
   type: MediaType; 
+  color?: string | null;
 }
 
 
-const Card = ({ imageSrc = "", mediaTitle = "", mediaId, liked, saved, genres,type }: CardProps) => {
+const Card = ({ imageSrc = "", mediaTitle = "", mediaId, liked, saved, genres,type,color }: CardProps) => {
 
   const basePath = type === "ANIME" ? "anime" : "manga";
   
   return (
    <div className="w-full bg-bg-dark rounded-xl h-66 min-[1000px]:h-[400px] flex flex-col group relative ">
-  <Link href={mediaId ? `/${basePath}/${mediaId}/overview` : "#"} className="relative overflow-hidden rounded-xl">
+  <Link href={mediaId ? `/${basePath}/${mediaId}/overview` : "#"} className="relative block w-full overflow-hidden rounded-xl">
     {/* Image */}
     <img
       src={imageSrc}
       alt={mediaTitle || "anime title"}
-      className="w-full h-[180px] min-[1000px]:h-[300px] object-cover rounded-xl transition-transform duration-300 group-hover:scale-105 group-hover:brightness-80 transform-gpu"
-      style={{ background: "var(--bg-light)", transformOrigin: "center top" }}
+      className="w-full h-[180px] min-[1000px]:h-[300px] object-cover rounded-xl"
+      loading="lazy"
+      decoding="async"
+      style={{ background: "var(--bg-light)" }}
     />
 
   {/* Overlay */}
-<div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-  <div className="text-center font-bold gap-2 flex flex-wrap justify-center">
-{genres?.map((genre, idx) => (
-  <div className="p-1" key={idx}>
-    <GenreTag genre={genre} />
-  </div>
-))}
+  <div className="pointer-events-none absolute inset-0 rounded-xl bg-black/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-
+  <div className="absolute inset-0 z-10 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+    <div className="text-center font-bold gap-2 flex flex-wrap justify-center">
+      {genres?.map((genre, idx) => (
+        <div className="p-1" key={idx}>
+          <GenreTag genre={genre} color={color}/>
+        </div>
+      ))}
+    </div>
   </div>
-</div>
+
   </Link>
 
   {/* Title and Buttons */}

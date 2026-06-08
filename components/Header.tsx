@@ -16,7 +16,7 @@ const Header = () => {
   const { setActive } = useNavbar();
 
   return (
-    <header className="flex justify-between min-[1400px]:justify-center items-center gap-2 w-full h-16 mask-image-to-bottom">
+    <header className="flex justify-between min-[1400px]:justify-center items-center gap-2 w-full h-16">
       
       {/* Mobile menu button */}
       <button

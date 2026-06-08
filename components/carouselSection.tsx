@@ -50,6 +50,7 @@ export default function CarouselSection({
         saved={savedMediaIds.includes(media.id)}
         genres={media.genres}
         type={type}
+        color={media.coverImage.color}
       />
     );
   });
