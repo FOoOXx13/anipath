@@ -1,5 +1,11 @@
 export type MediaType = "ANIME" | "MANGA";
 
+export interface PageInfo {
+  currentPage: number;
+  hasNextPage: boolean;
+  lastPage: number;
+}
+
 export interface Media {
   id: number;
   title: {
@@ -561,7 +567,7 @@ const query = `
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ query, variables }),
-    next: { revalidate: 60 }  //  cache for 60s
+    next: { revalidate: 60 }  
   });
 
   const json = await response.json();
@@ -571,3 +577,47 @@ const query = `
   return json.data.Media as MediaDetails ?? null;
 }
 
+export async function getAnimePage(page: number) {
+  const query = `
+    query ($page: Int, $perPage: Int) {
+      Page(page: $page, perPage: $perPage) {
+        pageInfo {
+          currentPage
+          hasNextPage
+          lastPage
+        }
+        media(
+          type: ANIME
+          sort: TRENDING_DESC
+        ) {
+          id
+          title {
+            romaji
+            english
+          }
+          coverImage {
+            large
+            color
+          }
+          season
+          seasonYear
+          episodes
+          genres
+        }
+      }
+    }
+  `;
+
+  const res = await fetch("https://graphql.anilist.co", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      query,
+      variables: { page, perPage: 45 },
+    }),
+    next: { revalidate: 60 },
+  });
+
+  const json = await res.json();
+  return json.data.Page;
+}
