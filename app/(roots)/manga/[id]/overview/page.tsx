@@ -9,6 +9,8 @@ export default async function OverviewPage({ params }: { params: any }) {
     return <div>Manga not found</div>;
   }
 
+
+
   return (
     <div>
       <div className="mt-6 md:mt-10">
@@ -19,7 +21,7 @@ export default async function OverviewPage({ params }: { params: any }) {
           {manga.relations?.edges?.map((edge: any) => (
             <Link
               key={edge.node.id}
-              href={edge.node.id ? `/manga/${edge.node.id}/overview` : "#"}
+              href={edge.node.id && edge.node.type === "MANGA" ? `/manga/${edge.node.id}/overview` :  edge.node.id && edge.node.type === "ANIME" ? `/anime/${edge.node.id}/overview` : "#"}
               className="flex w-full sm:w-80 h-full bg-bg-light rounded-xl gap-4 p-4 sm:p-0"
             >
               {edge.node.coverImage?.large && (

@@ -19,11 +19,35 @@ export default async function AnimePage({
     getSavedMediaIds("ANIME"),
   ]);
 
+  let effectivePageInfo = data.pageInfo;
+
+  // Guard against phantom trailing pages returned by the upstream API.
+  if (data.pageInfo.hasNextPage) {
+    const nextPageData = await getAnimePage(page + 1);
+    const nextPageHasContent =
+      Array.isArray(nextPageData?.media) && nextPageData.media.length > 0;
+
+    if (!nextPageHasContent) {
+      effectivePageInfo = {
+        ...effectivePageInfo,
+        hasNextPage: false,
+        lastPage: Math.min(effectivePageInfo.lastPage, page),
+      };
+    } else if (!nextPageData?.pageInfo?.hasNextPage) {
+      effectivePageInfo = {
+        ...effectivePageInfo,
+        lastPage: Math.min(effectivePageInfo.lastPage, page + 1),
+      };
+    }
+  }
+
   return (
     <div className="px-4 py-6">
-      <h1 className="text-2xl font-bold mb-6">Anime</h1>
 
-      <div className="flex flex-wrap gap-3 min-[1001px]:gap-4 justify-center">
+      <div >
+      <h1 className=" text-2xl min-[1001px]:text-4xl mb-1 lg:mb-4 font-bold flex justify-center">ANIME</h1>
+
+        <div className="flex flex-wrap gap-3 min-[1001px]:gap-4 justify-center">
         {data.media.map((anime: Media) => (
           <div key={anime.id} className="w-[120px] min-[1001px]:w-[200px]">
             <Card
@@ -38,9 +62,10 @@ export default async function AnimePage({
             />
           </div>
         ))}
+        </div>
       </div>
       <div className='flex w-full justify-center mt-6'>
-      <Pagination page={page} pageInfo={data.pageInfo} />
+      <Pagination page={page} basePath="/anime" pageInfo={effectivePageInfo} />
       </div>
     </div>
   );

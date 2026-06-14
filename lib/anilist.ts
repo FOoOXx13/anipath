@@ -619,5 +619,77 @@ export async function getAnimePage(page: number) {
   });
 
   const json = await res.json();
-  return json.data.Page;
+  const safePage = json?.data?.Page;
+
+  if (!safePage) {
+    return {
+      pageInfo: {
+        currentPage: page,
+        hasNextPage: false,
+        lastPage: page,
+      },
+      media: [] as Media[],
+    };
+  }
+
+  return safePage;
+}
+
+export async function getMangaPage(page: number) {
+  const query = `
+    query ($page: Int, $perPage: Int) {
+      Page(page: $page, perPage: $perPage) {
+        pageInfo {
+          currentPage
+          hasNextPage
+          lastPage
+        }
+        media(
+          type: MANGA
+          sort: TRENDING_DESC
+        ) {
+          id
+          title {
+            romaji
+            english
+          }
+          coverImage {
+            large
+            color
+          }
+          season
+          seasonYear
+          chapters
+          volumes
+          genres
+        }
+      }
+    }
+  `;
+
+  const res = await fetch("https://graphql.anilist.co", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      query,
+      variables: { page, perPage: 45 },
+    }),
+    next: { revalidate: 60 },
+  });
+
+  const json = await res.json();
+  const safePage = json?.data?.Page;
+
+  if (!safePage) {
+    return {
+      pageInfo: {
+        currentPage: page,
+        hasNextPage: false,
+        lastPage: page,
+      },
+      media: [] as Media[],
+    };
+  }
+
+  return safePage;
 }

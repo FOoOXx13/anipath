@@ -7,6 +7,7 @@ import {SignedIn} from "@clerk/nextjs";
 const link_items = [
   { id: 1, href: '/', icon: '/icons/home_dark.png', label: 'Home' },
   { id: 2, href: '/anime', icon: '/icons/home_dark.png', label: 'Anime' },
+  { id: 3, href: '/manga', icon: '/icons/home_dark.png', label: 'Manga' },
 ];
 
 const signedIn_link_items = [
