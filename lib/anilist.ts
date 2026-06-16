@@ -577,35 +577,48 @@ const query = `
   return json.data.Media as MediaDetails ?? null;
 }
 
-export async function getAnimePage(page: number) {
+export async function getAnimePage(page: number,{ genre, season, year, format, status }: { genre?: string; season?: string; year?: string; format?: string; status?: string; }) {
   const query = `
-    query ($page: Int, $perPage: Int) {
-      Page(page: $page, perPage: $perPage) {
-        pageInfo {
-          currentPage
-          hasNextPage
-          lastPage
-        }
-        media(
-          type: ANIME
-          sort: TRENDING_DESC
-        ) {
-          id
-          title {
-            romaji
-            english
-          }
-          coverImage {
-            large
-            color
-          }
-          season
-          seasonYear
-          episodes
-          genres
-        }
-      }
+ query (
+  $page: Int
+  $perPage: Int
+  $genre: [String]
+  $season: MediaSeason
+  $year: Int
+  $format: MediaFormat
+  $status: MediaStatus
+) {
+  Page(page: $page, perPage: $perPage) {
+    pageInfo {
+      currentPage
+      hasNextPage
+      lastPage
     }
+    media(
+      type: ANIME
+      genre_in: $genre
+      season: $season
+      seasonYear: $year
+      format: $format
+      status: $status
+      sort: TRENDING_DESC
+    ) {
+      id
+      title {
+        romaji
+        english
+      }
+      coverImage {
+        large
+        color
+      }
+      season
+      seasonYear
+      episodes
+      genres
+    }
+  }
+}
   `;
 
   const res = await fetch("https://graphql.anilist.co", {
@@ -613,7 +626,15 @@ export async function getAnimePage(page: number) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       query,
-      variables: { page, perPage: 45 },
+      variables: {
+  page,
+  perPage: 45,
+  genre: genre ? genre.split(",") : undefined,
+  season,
+  year: year ? Number(year) : undefined,
+  format,
+  status,
+}
     }),
     next: { revalidate: 60 },
   });

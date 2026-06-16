@@ -1,3 +1,6 @@
+"use client";
+
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 interface PaginationProps {
@@ -10,6 +13,7 @@ interface PaginationProps {
   };
 }
 
+// Helper to generate visible page numbers
 function getPageNumbers(current: number, total: number, delta = 2) {
   const pages: number[] = [];
 
@@ -23,46 +27,106 @@ function getPageNumbers(current: number, total: number, delta = 2) {
   return pages;
 }
 
-export default function Pagination({ page, basePath, pageInfo }: PaginationProps) {
-  // AniList can occasionally report an extra trailing page that has no items.
-  // If there is no next page, never render pages beyond the current one.
-  const total = !pageInfo.hasNextPage && pageInfo.lastPage > page
-    ? page
-    : pageInfo.lastPage;
+export default function Pagination({
+  page,
+  basePath,
+  pageInfo,
+}: PaginationProps) {
+  const searchParams = useSearchParams();
+
+  // Fix AniList phantom last page
+  const total =
+    !pageInfo.hasNextPage && pageInfo.lastPage > page
+      ? page
+      : pageInfo.lastPage;
+
   const pages = getPageNumbers(page, total);
 
-  return (
-    <div className="flex items-center gap-2">
+  // 🔥 Build URL while preserving filters
+  const createPageUrl = (newPage: number) => {
+    const params = new URLSearchParams(searchParams.toString());
 
+    if (newPage === 1) {
+      params.delete("page");
+    } else {
+      params.set("page", String(newPage));
+    }
+
+    return `${basePath}?${params.toString()}`;
+  };
+
+  return (
+    <div className="flex items-center gap-2 flex-wrap justify-center">
+
+      {/* PREV */}
       {page > 1 && (
-        <Link href={`${basePath}?page=${page - 1}`} className="w-10 h-10 bg-bg-dark rounded-full flex items-center justify-center">{"<"}</Link>
+        <Link
+          href={createPageUrl(page - 1)}
+          className="w-10 h-10 bg-bg-dark rounded-full flex items-center justify-center hover:bg-[var(--color-accent)] transition"
+        >
+          {"<"}
+        </Link>
       )}
 
+      {/* FIRST PAGE + ... */}
       {pages[0] > 1 && (
         <>
-          <Link href={`${basePath}?page=1`} className="w-10 h-10 bg-bg-dark rounded-full flex items-center justify-center">1</Link>
-          {pages[0] > 2 && <span className="w-10 h-10 bg-bg-dark rounded-full flex items-center justify-center">...</span>}
+          <Link
+            href={createPageUrl(1)}
+            className="w-10 h-10 bg-bg-dark rounded-full flex items-center justify-center"
+          >
+            1
+          </Link>
+
+          {pages[0] > 2 && (
+            <span className="w-10 h-10 flex items-center justify-center">
+              ...
+            </span>
+          )}
         </>
       )}
 
+      {/* MAIN PAGES */}
       {pages.map((p) => (
         <Link
           key={p}
-          href={`${basePath}?page=${p}`}
-          className={p === page ? "w-10 h-10 bg-(--color-accent) rounded-full flex items-center justify-center" : "w-10 h-10 bg-bg-dark rounded-full flex items-center justify-center"}
+          href={createPageUrl(p)}
+          className={`w-10 h-10 rounded-full flex items-center justify-center transition ${
+            p === page
+              ? "bg-[var(--color-accent)] text-black"
+              : "bg-bg-dark hover:bg-[var(--color-accent)]"
+          }`}
         >
           {p}
         </Link>
       ))}
+
+      {/* LAST PAGE + ... */}
       {pages[pages.length - 1] < total && (
         <>
-          {pages[pages.length - 1] < total - 1 && <span className="w-10 h-10 bg-bg-dark rounded-full flex items-center justify-center">...</span>}
-          <Link href={`${basePath}?page=${total}`} className="w-10 h-10 bg-bg-dark rounded-full flex items-center justify-center">{total}</Link>
+          {pages[pages.length - 1] < total - 1 && (
+            <span className="w-10 h-10 flex items-center justify-center">
+              ...
+            </span>
+          )}
+
+          <Link
+            href={createPageUrl(total)}
+            className="w-10 h-10 bg-bg-dark rounded-full flex items-center justify-center"
+          >
+            {total}
+          </Link>
         </>
       )}
 
+      {/* NEXT */}
       {pageInfo.hasNextPage && (
-        <Link href={`${basePath}?page=${page + 1}`} className="w-10 h-10 bg-bg-dark rounded-full flex items-center justify-center">{">"}</Link>
+        <Link
+          href={createPageUrl(page + 1)}
+          className="w-10 h-10 bg-bg-dark rounded-full flex items-center justify-center hover:bg-[var(--color-accent)] transition"
+        >
+          {">"}
+        </Link>
       )}
     </div>
   );
