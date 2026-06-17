@@ -5,6 +5,23 @@ import { useState, useEffect, useRef } from "react";
 
 const GENRES = ["Action", "Drama", "Comedy", "Romance", "Fantasy"];
 const SEASONS = ["WINTER", "SPRING", "SUMMER", "FALL"];
+const YEARS = Array.from({ length: 25 }, (_, i) => String(2025 - i));
+
+const FORMATS = [
+  "TV",
+  "TV_SHORT",
+  "MOVIE",
+  "SPECIAL",
+  "OVA",
+  "ONA",
+];
+
+const STATUS = [
+  "FINISHED",
+  "RELEASING",
+  "NOT_YET_RELEASED",
+  "CANCELLED",
+];
 
 export default function FilterBar() {
   const router = useRouter();
@@ -38,15 +55,15 @@ export default function FilterBar() {
   // Main toggle logic
   const toggleValue = (key: string, value: string) => {
     const newParams = new URLSearchParams(params.toString());
+    const SINGLE_SELECT = ["season", "year", "format", "status"];
 
-    if (key === "season") {
-      // SINGLE SELECT
-      if (params.get(key) === value) {
-        newParams.delete(key);
-      } else {
-        newParams.set(key, value);
-      }
-    } else {
+   if (SINGLE_SELECT.includes(key)) {
+  if (params.get(key) === value) {
+    newParams.delete(key);
+  } else {
+    newParams.set(key, value);
+  }
+} else {
       // MULTI SELECT
       const current = newParams.get(key)?.split(",") || [];
 
@@ -67,7 +84,7 @@ export default function FilterBar() {
 
     newParams.set("page", "1");
 
-    router.push(`/anime?${newParams.toString()}`);
+    router.push(`?${newParams.toString()}`);
   };
 
   return (
@@ -118,7 +135,7 @@ export default function FilterBar() {
               : "bg-[var(--bg-dark)] hover:bg-[var(--color-accent)]"
           }`}
         >
-          Season
+          {params.get("season") ? `Season: ${params.get("season")}` : "Season"}
         </button>
 
         {open === "season" && (
@@ -145,6 +162,113 @@ export default function FilterBar() {
           </div>
         )}
       </div>
+
+      <div className="relative">
+  <button
+    onClick={() => setOpen(open === "year" ? null : "year")}
+    className={`px-3 py-1 rounded ${
+      hasFilter("year")
+        ? "bg-[var(--color-accent)] text-black"
+        : "bg-[var(--bg-dark)] hover:bg-[var(--color-accent)]"
+    }`}
+  >
+    {params.get("year") ? `Year: ${params.get("year")}` : "Year"}
+  </button>
+
+  {open === "year" && (
+    <div className="absolute max-h-60 overflow-y-auto bg-[var(--bg-dark)] p-3 rounded mt-2 z-50 shadow-lg">
+      {YEARS.map((y) => (
+        <button
+          key={y}
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleValue("year", y);
+            setOpen(null);
+          }}
+          className={`block w-full text-left px-2 py-1 ${
+            isSelected("year", y)
+              ? "text-[var(--color-accent)]"
+              : "hover:text-[var(--color-accent)]"
+          }`}
+        >
+          {y}
+        </button>
+      ))}
+    </div>
+  )}
+</div>
+
+<div className="relative">
+  <button
+    onClick={() => setOpen(open === "format" ? null : "format")}
+    className={`px-3 py-1 rounded ${
+      hasFilter("format")
+        ? "bg-[var(--color-accent)] text-black"
+        : "bg-[var(--bg-dark)] hover:bg-[var(--color-accent)]"
+    }`}
+  >
+    {params.get("format") ? `Format: ${params.get("format")}` : "Format"}
+  </button>
+
+  {open === "format" && (
+    <div className="absolute bg-[var(--bg-dark)] p-3 rounded mt-2 z-50 shadow-lg">
+      {FORMATS.map((f) => (
+        <button
+          key={f}
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleValue("format", f);
+            setOpen(null);
+          }}
+          className={`block w-full text-left px-2 py-1 ${
+            isSelected("format", f)
+              ? "text-[var(--color-accent)]"
+              : "hover:text-[var(--color-accent)]"
+          }`}
+        >
+          {f}
+        </button>
+      ))}
+    </div>
+  )}
+</div>
+
+<div className="relative">
+  <button
+    onClick={() => setOpen(open === "status" ? null : "status")}
+    className={`px-3 py-1 rounded ${
+      hasFilter("status")
+        ? "bg-[var(--color-accent)] text-black"
+        : "bg-[var(--bg-dark)] hover:bg-[var(--color-accent)]"
+    }`}
+  >
+    {params.get("status")
+  ? `Status: ${params.get("status")?.replaceAll("_", " ")}`
+  : "Status"}
+  </button>
+
+  {open === "status" && (
+    <div className="absolute bg-[var(--bg-dark)] p-3 rounded mt-2 z-50 shadow-lg">
+      {STATUS.map((s) => (
+        <button
+          key={s}
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleValue("status", s);
+            setOpen(null);
+          }}
+          className={`block w-full text-left px-2 py-1 ${
+            isSelected("status", s)
+              ? "text-[var(--color-accent)]"
+              : "hover:text-[var(--color-accent)]"
+          }`}
+        >
+          {s.replaceAll("_", " ")}
+        </button>
+      ))}
+    </div>
+  )}
+</div>
 
       {/* CLEAR FILTERS */}
       <button
