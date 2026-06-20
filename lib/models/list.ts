@@ -6,6 +6,8 @@ export interface IList extends Document {
     isDefault: boolean;
     animeIds: number[];
     mangaIds: number[];
+    thumbnail?: string | null;
+mediaCount?: number;
     createdAt: Date; 
     updatedAt: Date;
 }
@@ -17,6 +19,15 @@ const ListSchema = new Schema<IList>(
         isDefault: {type: Boolean, default: false},
         animeIds: {type: [Number], default: []},
         mangaIds: {type: [Number], default: []},
+        thumbnail: {
+        type: String,
+        default: null,
+        },
+        mediaCount: {
+          type: Number,
+          default: 0,
+        },
+        
     },
     {timestamps: true}
 )

@@ -22,7 +22,7 @@ const Card = ({ imageSrc = "", mediaTitle = "", mediaId, liked, saved, genres,ty
   const basePath = type === "ANIME" ? "anime" : "manga";
   
   return (
-   <div className="w-full bg-bg-dark rounded-xl h-66 min-[1000px]:h-[400px] flex flex-col group relative ">
+   <div className="w-full bg-bg-dark rounded-xl h-66 min-[1000px]:h-[400px] flex flex-col group relative hover:scale-[1.03] transition">
   <Link href={mediaId ? `/${basePath}/${mediaId}/overview` : "#"} className="relative block w-full overflow-hidden rounded-xl">
     {/* Image */}
     <img

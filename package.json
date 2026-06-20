@@ -9,7 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.36.7",
+    "-": "^0.0.1-security.1",
+    "@clerk/nextjs": "^6.39.5",
     "@lottiefiles/react-lottie-player": "^3.6.0",
     "gsap": "^3.13.0",
     "lottie-react": "^2.4.1",
@@ -25,6 +26,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "baseline-browser-mapping": "^2.10.38",
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
     "tailwindcss": "^4",

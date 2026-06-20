@@ -1,44 +1,61 @@
 import { auth } from "@clerk/nextjs/server";
 import connectDB from "@/lib/mongodb";
 import { List } from "@/lib/models/list";
+import { fetchMediaById } from "@/lib/anilist"; 
 
 export async function GET(req: Request) {
-    const {userId} = await auth();
-    if(!userId) {
-        return new Response ("Unauthorized", {status: 401})
-    }
+  const { userId } = await auth();
 
-    const {searchParams} = new URL(req.url);
-        const mediaIdParam = searchParams.get("mediaId");
-        const animeIdParam = searchParams.get("animeId");
-        const mediaTypeParam = searchParams.get("mediaType");
-        const mediaType = mediaTypeParam === "MANGA" ? "MANGA" : "ANIME";
-        const mediaId = mediaIdParam
-                ? Number(mediaIdParam)
-                : animeIdParam
-                    ? Number(animeIdParam)
-                    : null;
+  if (!userId) {
+    return new Response("Unauthorized", { status: 401 });
+  }
 
-    await connectDB();
+  await connectDB();
 
-    const lists = await List.find({userId}).lean();
+  const lists = await List.find({ userId }).lean();
 
-    const response = lists.map(list => ({
+  const response = await Promise.all(
+    lists.map(async (list) => {
+      const animeIds = list.animeIds ?? [];
+      const mangaIds = list.mangaIds ?? [];
+
+      const mediaCount = animeIds.length + mangaIds.length;
+
+      // 👉 pick preview item (last added feels better UX)
+      let previewId: number | null = null;
+let previewType: "ANIME" | "MANGA" | null = null;
+
+if (animeIds.length > 0) {
+  previewId = animeIds[animeIds.length - 1];
+  previewType = "ANIME";
+} else if (mangaIds.length > 0) {
+  previewId = mangaIds[mangaIds.length - 1];
+  previewType = "MANGA";
+}
+
+      let thumbnail = null;
+
+     if (previewId && previewType) {
+  try {
+    const media = await fetchMediaById(previewId, previewType);
+    thumbnail = media?.coverImage?.extraLarge ?? null;
+  } catch {
+    thumbnail = null;
+  }
+}
+
+      return {
         _id: list._id.toString(),
         name: list.name,
         isDefault: list.isDefault,
-                contains: mediaId
-                    ? mediaType === "MANGA"
-                        ? (list.mangaIds ?? []).includes(mediaId)
-                        : (list.animeIds ?? []).includes(mediaId)
-                    : false,
-    }))
+        mediaCount,
+        thumbnail,
+      };
+    })
+  );
 
-    return Response.json(response)
-
-
+  return Response.json(response);
 }
-
 
 export async function POST(req: Request) {
     const { name } = await req.json();
