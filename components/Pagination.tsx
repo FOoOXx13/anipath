@@ -35,10 +35,7 @@ export default function Pagination({
   const searchParams = useSearchParams();
 
   // Fix AniList phantom last page
-  const total =
-    !pageInfo.hasNextPage && pageInfo.lastPage > page
-      ? page
-      : pageInfo.lastPage;
+  const total = pageInfo.lastPage;
 
   const pages = getPageNumbers(page, total);
 

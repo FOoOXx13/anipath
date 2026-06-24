@@ -142,6 +142,10 @@ export interface MediaDetails {
 const ANILIST_URL = "https://graphql.anilist.co";
 
 export async function searchMedia(query: string, type: MediaType) {
+  if (!query.trim()) {
+    return [];
+  }
+
   const gql = `
     query ($search: String, $type: MediaType) {
       Page(perPage: 50) {
@@ -177,8 +181,18 @@ export async function searchMedia(query: string, type: MediaType) {
     next: { revalidate: 60 },
   });
 
+  if (!res.ok) {
+    return [];
+  }
+
   const json = await res.json();
-  return json.data.Page.media as Media[];
+  const media = json?.data?.Page?.media;
+
+  if (!Array.isArray(media)) {
+    return [];
+  }
+
+  return media as Media[];
 }
 
 
@@ -590,10 +604,12 @@ export async function getAnimePage(page: number,{ genre, season, year, format, s
 ) {
   Page(page: $page, perPage: $perPage) {
     pageInfo {
-      currentPage
-      hasNextPage
-      lastPage
-    }
+  currentPage
+  hasNextPage
+  lastPage
+  total
+  perPage
+}
     media(
       type: ANIME
       genre_in: $genre

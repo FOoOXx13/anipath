@@ -19,27 +19,17 @@ export default async function MangaPage({
     getSavedMediaIds("MANGA"),
   ]);
 
-  let effectivePageInfo = data.pageInfo;
+  const computedLast =
+    typeof data.pageInfo.total === "number" && typeof data.pageInfo.perPage === "number" && data.pageInfo.perPage > 0
+      ? Math.ceil(data.pageInfo.total / data.pageInfo.perPage)
+      : data.pageInfo.lastPage;
 
-  // Guard against phantom trailing pages returned by the upstream API.
-  if (data.pageInfo.hasNextPage) {
-    const nextPageData = await getMangaPage(page + 1);
-    const nextPageHasContent =
-      Array.isArray(nextPageData?.media) && nextPageData.media.length > 0;
-
-    if (!nextPageHasContent) {
-      effectivePageInfo = {
-        ...effectivePageInfo,
-        hasNextPage: false,
-        lastPage: Math.min(effectivePageInfo.lastPage, page),
-      };
-    } else if (!nextPageData?.pageInfo?.hasNextPage) {
-      effectivePageInfo = {
-        ...effectivePageInfo,
-        lastPage: Math.min(effectivePageInfo.lastPage, page + 1),
-      };
-    }
-  }
+  const safeLast = Math.max(1, computedLast);
+  const effectivePageInfo = {
+    ...data.pageInfo,
+    hasNextPage: page < safeLast,
+    lastPage: safeLast,
+  };
 
   return (
     <div className="px-4 py-6">
@@ -65,7 +55,7 @@ export default async function MangaPage({
         </div>
       </div>
       <div className='flex w-full justify-center mt-6'>
-      <Pagination page={page} basePath="/manga" pageInfo={effectivePageInfo} />
+      <Pagination page={page} basePath="/manga" mediaType="MANGA" pageInfo={effectivePageInfo} />
       </div>
     </div>
   );

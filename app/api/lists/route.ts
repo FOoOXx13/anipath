@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import connectDB from "@/lib/mongodb";
 import { List } from "@/lib/models/list";
-import { fetchMediaById } from "@/lib/anilist"; 
+import { fetchMediaByIds } from "@/lib/anilist";
 
 export async function GET(req: Request) {
   const { userId } = await auth();
@@ -19,30 +19,36 @@ export async function GET(req: Request) {
       const animeIds = list.animeIds ?? [];
       const mangaIds = list.mangaIds ?? [];
 
-      const mediaCount = animeIds.length + mangaIds.length;
+      const [animeMedia, mangaMedia] = await Promise.all([
+        fetchMediaByIds(animeIds, "ANIME"),
+        fetchMediaByIds(mangaIds, "MANGA"),
+      ]);
 
-      // 👉 pick preview item (last added feels better UX)
-      let previewId: number | null = null;
-let previewType: "ANIME" | "MANGA" | null = null;
+      const mediaCount = animeMedia.length + mangaMedia.length;
 
-if (animeIds.length > 0) {
-  previewId = animeIds[animeIds.length - 1];
-  previewType = "ANIME";
-} else if (mangaIds.length > 0) {
-  previewId = mangaIds[mangaIds.length - 1];
-  previewType = "MANGA";
-}
+      const animeById = new Map(animeMedia.map((item) => [item.id, item]));
+      const mangaById = new Map(mangaMedia.map((item) => [item.id, item]));
 
-      let thumbnail = null;
+      // Pick the last resolvable anime thumbnail first, then manga.
+      let thumbnail: string | null = null;
 
-     if (previewId && previewType) {
-  try {
-    const media = await fetchMediaById(previewId, previewType);
-    thumbnail = media?.coverImage?.extraLarge ?? null;
-  } catch {
-    thumbnail = null;
-  }
-}
+      for (let i = animeIds.length - 1; i >= 0; i--) {
+        const media = animeById.get(animeIds[i]);
+        if (media?.coverImage?.extraLarge) {
+          thumbnail = media.coverImage.extraLarge;
+          break;
+        }
+      }
+
+      if (!thumbnail) {
+        for (let i = mangaIds.length - 1; i >= 0; i--) {
+          const media = mangaById.get(mangaIds[i]);
+          if (media?.coverImage?.extraLarge) {
+            thumbnail = media.coverImage.extraLarge;
+            break;
+          }
+        }
+      }
 
       return {
         _id: list._id.toString(),

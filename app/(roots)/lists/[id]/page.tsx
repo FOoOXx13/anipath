@@ -31,8 +31,8 @@ export default async function ListAnimePage({
 
 
   return (
-    <div className="p-6 mt-8 flex flex-col items-center md:items-start md:mx-10">
-    <h1 className="text-2xl font-bold mb-6">
+    <div className="px-4 md:px-8 xl:px-16 py-6 mt-6">
+    <h1 className="text-2xl min-[1001px]:text-4xl font-bold mb-4 text-center md:text-left">
       {listData.name} ({media.length})
 </h1>
       {
@@ -45,9 +45,12 @@ export default async function ListAnimePage({
       {media.length === 0 ? (
         <p>No media in this list yet 👀</p>
       ) : (
-        <div className="flex flex-wrap gap-6 w-full justify-center md:justify-start">
+        <div className="flex flex-wrap gap-3 min-[1001px]:gap-4 justify-center md:justify-start">
           {media.map((item: any) => (
-            <div key={`${item.mediaType}-${item.id}`} className="w-[120px] min-[1000px]:w-[200px] h-60 min-[1000px]:h-[380px] mb-4" >
+            <div
+              key={`${item.mediaType}-${item.id}`}
+              className="w-[120px] min-[1001px]:w-[200px]"
+            >
               <Card
                 mediaId={item.id}
                 mediaTitle={item.title.english || item.title.romaji}
