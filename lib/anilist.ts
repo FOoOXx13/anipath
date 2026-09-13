@@ -347,7 +347,16 @@ export async function fetchTrendingMedia(page: number, type: MediaType): Promise
   });
 
   const json = await response.json();
-  return json.data.Page.media as Media[];
+
+ if (json.errors) {
+  console.error("AniList error:", JSON.stringify(json.errors, null, 2));
+
+  throw new Error(
+    json.errors.map((err: { message: string }) => err.message).join(", ")
+  );
+}
+
+return json.data.Page.media as Media[];
 }
 
 //Only for anime, since manga doesn't have seasons

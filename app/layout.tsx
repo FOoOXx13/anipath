@@ -29,7 +29,40 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+<ClerkProvider
+appearance={{
+  variables: {
+    colorPrimary: "var(--color-accent)",
+    colorBackground: "var(--background)",
+    colorForeground: "var(--foreground)",
+    colorMutedForeground: "var(--color-muted)",
+    colorInputBackground: "var(--bg-light)",
+    colorInputText: "var(--foreground)",
+    borderRadius: "12px",
+  },
+
+  elements: {
+    socialButtonsBlockButton: {
+      backgroundColor: "var(--bg-light)",
+      color: "var(--foreground)",
+      border: "none",
+    },
+
+    socialButtonsBlockButtonText: {
+      color: "var(--foreground)",
+    },
+
+    socialButtonsIconButton: {
+      backgroundColor: "var(--bg-light)",
+    },
+footer: {
+  background: "var(--background) !important",
+  backgroundImage: "none !important",
+  border: "none",
+},
+  },
+}}
+>
     <html lang="en">
       <body
         className={`${robotoSlab.variable} ${montserrat.variable} antialiased`}
